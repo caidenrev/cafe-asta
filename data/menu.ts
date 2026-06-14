@@ -9,493 +9,776 @@ export interface MenuItem {
 }
 
 export const MENU_ITEMS: MenuItem[] = [
-  // COFFEE SELECTION
+  // ==========================================
+  // COFFEE SELECTION (Panas / Dingin)
+  // ==========================================
   {
-    id: 'c1',
-    name: 'Espresso (Single)',
-    price: 18000,
+    id: 'kopi-kapal-api',
+    name: 'Kopi Kapal Api',
+    price: 6000,
     category: 'coffee',
-    description: 'Ekstraksi murni dari biji kopi Arabika pilihan panggang gelap, intens dan mantap.',
-    image: 'https://images.unsplash.com/photo-1510701114205-0cff478950f5?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'c2',
-    name: 'Espresso (Double)',
-    price: 22000,
-    category: 'coffee',
-    description: 'Ekstraksi ganda kopi Arabika pilihan untuk rasa espresso yang lebih pekat dan berenergi.',
-    image: 'https://images.unsplash.com/photo-1510701114205-0cff478950f5?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'c3',
-    name: 'Americano',
-    price: 25000,
-    category: 'coffee',
-    description: 'Espresso double shot dengan air murni, menghasilkan rasa kopi hitam klasik yang bersih dan segar.',
-    image: 'https://images.unsplash.com/photo-1551046713-bc47f96210dd?q=80&w=600&auto=format&fit=crop',
+    description: 'Kopi hitam legendaris Kapal Api aromatik dan pekat.',
+    image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=600&auto=format&fit=crop',
     variants: [
-      { name: 'Panas', price: 25000 },
-      { name: 'Dingin', price: 27000 }
+      { name: 'Panas', price: 6000 },
+      { name: 'Dingin', price: 8000 }
     ]
   },
   {
-    id: 'c4',
-    name: 'Cappuccino',
-    price: 30000,
+    id: 'kopi-gajah-tubruk',
+    name: 'Kopi Gajah Tubruk',
+    price: 6000,
     category: 'coffee',
-    description: 'Keseimbangan espresso, susu hangat lembut, dan busa susu tebal yang mewah bertabur bubuk cokelat.',
-    image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?q=80&w=600&auto=format&fit=crop',
+    description: 'Kopi tubruk tradisional dengan ampas mantap dan wangi klasik.',
+    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop',
     variants: [
-      { name: 'Panas', price: 30000 },
-      { name: 'Dingin', price: 32000 }
+      { name: 'Panas', price: 6000 },
+      { name: 'Dingin', price: 8000 }
     ]
   },
   {
-    id: 'c5',
-    name: 'Cafe Latte',
-    price: 30000,
+    id: 'kopi-liong',
+    name: 'Kopi Liong',
+    price: 8000,
     category: 'coffee',
-    description: 'Espresso Arabika premium yang dipadukan dengan susu hangat berbusa tipis (steamed milk) yang creamy.',
-    image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fc9f?q=80&w=600&auto=format&fit=crop',
+    description: 'Kopi khas Bogor legendaris dengan aroma super tajam dan rasa khas.',
+    image: 'https://images.unsplash.com/photo-1568649929103-28fffecca3a6?q=80&w=600&auto=format&fit=crop',
     variants: [
-      { name: 'Panas', price: 30000 },
-      { name: 'Dingin', price: 32000 }
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
     ]
   },
   {
-    id: 'c6',
-    name: 'Flat White (Hot)',
-    price: 30000,
+    id: 'indocafe-mix',
+    name: 'Indocafe Mix',
+    price: 6000,
     category: 'coffee',
-    description: 'Double shot espresso ristretto disajikan dengan susu hangat berbusa sangat halus (microfoam).',
-    image: 'https://images.unsplash.com/photo-1577968897066-11440ef71e4f?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'c7',
-    name: 'Piccolo',
-    price: 28000,
-    category: 'coffee',
-    description: 'Mini latte bergaya Australia dengan ristretto shot pekat dan sedikit susu hangat berbusa halus.',
-    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'c8',
-    name: 'Caramel Macchiato',
-    price: 35000,
-    category: 'coffee',
-    description: 'Perpaduan sirup vanila manis, susu segar, espresso shot, dan siraman saus karamel di atasnya.',
-    image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?q=80&w=600&auto=format&fit=crop',
+    description: 'Kopi 3-in-1 instan perpaduan pas kopi, krimer, dan gula manis.',
+    image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?q=80&w=600&auto=format&fit=crop',
     variants: [
-      { name: 'Panas', price: 35000 },
-      { name: 'Dingin', price: 37000 }
+      { name: 'Panas', price: 6000 },
+      { name: 'Dingin', price: 8000 }
     ]
   },
   {
-    id: 'c9',
-    name: 'Vanilla Latte',
-    price: 33000,
+    id: 'abc-susu',
+    name: 'ABC Susu',
+    price: 8000,
     category: 'coffee',
-    description: 'Espresso khas kami dicampur dengan steamed milk lembut dan ekstrak vanila manis harum menenangkan.',
-    image: 'https://images.unsplash.com/photo-1595434066389-0cf5da759656?q=80&w=600&auto=format&fit=crop',
-    variants: [
-      { name: 'Panas', price: 33000 },
-      { name: 'Dingin', price: 35000 }
-    ]
-  },
-  {
-    id: 'c10',
-    name: 'Hazelnut Latte',
-    price: 33000,
-    category: 'coffee',
-    description: 'Espresso nikmat berpadu dengan susu hangat dan rasa manis kacang hazelnut panggang aromatik.',
+    description: 'Kopi instan ABC manis dengan paduan susu yang gurih.',
     image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop',
     variants: [
-      { name: 'Panas', price: 33000 },
-      { name: 'Dingin', price: 35000 }
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
     ]
   },
   {
-    id: 'c11',
-    name: 'Mochaccino',
-    price: 35000,
+    id: 'luwak-white-coffee',
+    name: 'Luwak White Coffee',
+    price: 8000,
     category: 'coffee',
-    description: 'Paduan sempurna espresso pekat, cokelat premium cair, dan susu hangat yang gurih manis.',
+    description: 'Kopi putih ramah lambung dengan rasa creamy and manis lembut.',
+    image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fc9f?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'abc-klepon',
+    name: 'ABC Klepon',
+    price: 8000,
+    category: 'coffee',
+    description: 'Sensasi unik kopi susu beraroma pandan dan gula merah khas klepon.',
+    image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'abc-mocca',
+    name: 'ABC Mocca',
+    price: 8000,
+    category: 'coffee',
+    description: 'Kopi instan beraroma cokelat moka yang lezat dan nikmat.',
     image: 'https://images.unsplash.com/photo-1607681034540-2c46cc71896d?q=80&w=600&auto=format&fit=crop',
     variants: [
-      { name: 'Panas', price: 35000 },
-      { name: 'Dingin', price: 37000 }
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
     ]
   },
   {
-    id: 'c12',
-    name: 'Affogato',
-    price: 28000,
+    id: 'goodday-mocacinno',
+    name: 'GoodDay Mocacinno',
+    price: 8000,
     category: 'coffee',
-    description: 'Satu scoop es krim vanila manis lembut yang disiram langsung dengan espresso shot panas pekat.',
-    image: 'https://images.unsplash.com/photo-1594911774802-8822a707c93e?q=80&w=600&auto=format&fit=crop'
-  },
-
-  // NON-COFFEE SELECTION
-  {
-    id: 'nc1',
-    name: 'Matcha Latte',
-    price: 30000,
-    category: 'non-coffee',
-    description: 'Teh matcha Jepang ceremonial grade premium pilihan yang diaduk dengan susu murni segar dan sirup.',
-    image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=600&auto=format&fit=crop',
-    variants: [
-      { name: 'Panas', price: 30000 },
-      { name: 'Dingin', price: 32000 }
-    ]
-  },
-  {
-    id: 'nc2',
-    name: 'Chocolate',
-    price: 30000,
-    category: 'non-coffee',
-    description: 'Minuman cokelat hitam premium pekat kaya rasa yang disajikan hangat atau dingin dengan susu murni.',
-    image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format&fit=crop',
-    variants: [
-      { name: 'Panas', price: 30000 },
-      { name: 'Dingin', price: 32000 }
-    ]
-  },
-  {
-    id: 'nc3',
-    name: 'Taro Latte',
-    price: 28000,
-    category: 'non-coffee',
-    description: 'Minuman taro talas ungu manis nan gurih legit berpadu susu murni segar berkrim.',
-    image: 'https://images.unsplash.com/photo-1616157434524-2c256086f6de?q=80&w=600&auto=format&fit=crop',
-    variants: [
-      { name: 'Panas', price: 28000 },
-      { name: 'Dingin', price: 30000 }
-    ]
-  },
-  {
-    id: 'nc4',
-    name: 'Red Velvet',
-    price: 28000,
-    category: 'non-coffee',
-    description: 'Rasa kue red velvet manis gurih berpadu dengan susu murni segar yang lembut dan lezat.',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=600&auto=format&fit=crop',
-    variants: [
-      { name: 'Panas', price: 28000 },
-      { name: 'Dingin', price: 30000 }
-    ]
-  },
-  {
-    id: 'nc5',
-    name: 'Charcoal Latte',
-    price: 30000,
-    category: 'non-coffee',
-    description: 'Minuman unik dengan kandungan karbon bambu aktif berkualitas tinggi dengan susu segar manis.',
+    description: 'Kopi gaul dengan cokelat moka manis berbusa lembut.',
     image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=600&auto=format&fit=crop',
     variants: [
-      { name: 'Panas', price: 30000 },
-      { name: 'Dingin', price: 32000 }
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
     ]
   },
   {
-    id: 'nc6',
-    name: 'Thai Tea (Iced)',
-    price: 22000,
-    category: 'non-coffee',
-    description: 'Teh hitam beraroma rempah khas Thailand dipadukan kental manis and susu segar dingin.',
-    image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=600&auto=format&fit=crop'
+    id: 'goodday-chococinno',
+    name: 'GoodDay Chococinno',
+    price: 8000,
+    category: 'coffee',
+    description: 'Kopi instan dengan rasa cokelat chococinno gurih manis mantap.',
+    image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
   },
   {
-    id: 'nc7',
-    name: 'Lychee Tea (Iced)',
-    price: 25000,
+    id: 'goodday-cappuccino',
+    name: 'GoodDay Cappuccino',
+    price: 8000,
+    category: 'coffee',
+    description: 'Kopi kapucino instan wangi dengan taburan choco granule di atasnya.',
+    image: 'https://images.unsplash.com/photo-1557006021-b85abd7becb6?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'goodday-freeze',
+    name: 'GoodDay Freeze',
+    price: 8000,
+    category: 'coffee',
+    description: 'Kopi dingin menyegarkan dengan sensasi dingin mint cokelat.',
+    image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'creamy-latte',
+    name: 'Creamy Latte',
+    price: 8000,
+    category: 'coffee',
+    description: 'Kopi susu super lembut, sangat cocok untuk bersantai.',
+    image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fc9f?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'americano',
+    name: 'Americano',
+    price: 10000,
+    category: 'coffee',
+    description: 'Kopi espresso hitam murni tanpa gula yang kuat dan segar.',
+    image: 'https://images.unsplash.com/photo-1551046713-bc47f96210dd?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 10000 },
+      { name: 'Dingin', price: 12000 }
+    ]
+  },
+
+  // ==========================================
+  // CHOCOLATE & MILK (non-coffee)
+  // ==========================================
+  {
+    id: 'milo',
+    name: 'Milo',
+    price: 8000,
     category: 'non-coffee',
-    description: 'Teh melati dingin dipadukan buah leci manis asli dan sirup leci segar yang disukai semua kalangan.',
+    description: 'Cokelat malt legendaris bergizi tinggi disukai semua kalangan.',
+    image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'chocolatos-coklat',
+    name: 'Chocolatos Coklat',
+    price: 8000,
+    category: 'non-coffee',
+    description: 'Minuman cokelat Italia premium Chocolatos rasa tebal memanjakan.',
+    image: 'https://images.unsplash.com/photo-1607681034540-2c46cc71896d?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'chocolatos-vanila',
+    name: 'Chocolatos Vanila',
+    price: 8000,
+    category: 'non-coffee',
+    description: 'Minuman rasa vanila manis harum nan lembut dari Chocolatos.',
+    image: 'https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'chocolatos-matcha',
+    name: 'Chocolatos Matcha',
+    price: 8000,
+    category: 'non-coffee',
+    description: 'Minuman teh hijau Jepang Matcha manis legit aromatik khas Chocolatos.',
+    image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'drink-beng-beng',
+    name: 'Drink Beng Beng',
+    price: 8000,
+    category: 'non-coffee',
+    description: 'Minuman cokelat dengan cita rasa khas wafer karamel Beng Beng.',
+    image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'susu-jahe',
+    name: 'Susu Jahe',
+    price: 6000,
+    category: 'non-coffee',
+    description: 'Seduhan jahe merah bakar hangat pedas berpadu susu kental manis.',
+    image: 'https://images.unsplash.com/photo-1594911774802-8822a707c93e?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'frisian-flag-coklat',
+    name: 'Frisian Flag Coklat',
+    price: 6000,
+    category: 'non-coffee',
+    description: 'Susu kental manis cokelat Frisian Flag klasik.',
+    image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 6000 },
+      { name: 'Dingin', price: 7000 }
+    ]
+  },
+  {
+    id: 'frisian-flag-putih',
+    name: 'Frisian Flag Putih',
+    price: 6000,
+    category: 'non-coffee',
+    description: 'Susu kental manis putih Frisian Flag gurih.',
+    image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 6000 },
+      { name: 'Dingin', price: 7000 }
+    ]
+  },
+  {
+    id: 'dancow',
+    name: 'Dancow',
+    price: 10000,
+    category: 'non-coffee',
+    description: 'Susu bubuk Dancow full cream super gurih kaya rasa.',
+    image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 10000 },
+      { name: 'Dingin', price: 12000 }
+    ]
+  },
+  {
+    id: 'teh-tarik',
+    name: 'Teh Tarik',
+    price: 8000,
+    category: 'non-coffee',
+    description: 'Perpaduan teh hitam harum dan susu kental manis yang ditarik berbusa.',
+    image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'ovaltine',
+    name: 'Ovaltine',
+    price: 8000,
+    category: 'non-coffee',
+    description: 'Susu cokelat Ovaltine dengan rasa malt premium manis legit.',
+    image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+  {
+    id: 'extra-joss-susu',
+    name: 'Extra Joss Susu',
+    price: 12000,
+    category: 'non-coffee',
+    description: 'Minuman energi Extra Joss dingin dicampur susu kental manis gurih.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'kuku-bima-susu',
+    name: 'Kuku Bima Susu',
+    price: 12000,
+    category: 'non-coffee',
+    description: 'Minuman energi Kuku Bima rasa buah segar berpadu susu manis.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'hilo-chocolate',
+    name: 'Hilo Chocolate',
+    price: 8000,
+    category: 'non-coffee',
+    description: 'Minuman susu cokelat Hilo tinggi kalsium kaya vitamin rasa lezat.',
+    image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format&fit=crop',
+    variants: [
+      { name: 'Panas', price: 8000 },
+      { name: 'Dingin', price: 10000 }
+    ]
+  },
+
+  // ==========================================
+  // NUTRISARI SELECTION (refreshers)
+  // ==========================================
+  {
+    id: 'sweet-orange',
+    name: 'Nutrisari Sweet Orange',
+    price: 8000,
+    category: 'refresher',
+    description: 'Minuman jeruk manis Nutrisari kaya vitamin C dingin menyegarkan.',
+    image: 'https://images.unsplash.com/photo-1613478223719-2ab80260f42c?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'jeruk-peras',
+    name: 'Nutrisari Jeruk Peras',
+    price: 8000,
+    category: 'refresher',
+    description: 'Rasa jeruk peras lokal asam manis segar menggugah selera.',
+    image: 'https://images.unsplash.com/photo-1613478223719-2ab80260f42c?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'jeruk-nipis',
+    name: 'Nutrisari Jeruk Nipis',
+    price: 8000,
+    category: 'refresher',
+    description: 'Sensasi asam jeruk nipis murni yang super segar membasuh dahaga.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'milky-orange',
+    name: 'Nutrisari Milky Orange',
+    price: 8000,
+    category: 'refresher',
+    description: 'Perpaduan jeruk buah manis dan kelembutan rasa susu creamy.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'blewah',
+    name: 'Nutrisari Blewah',
+    price: 8000,
+    category: 'refresher',
+    description: 'Rasa buah blewah khas buka puasa yang manis menyegarkan.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'semangka',
+    name: 'Nutrisari Semangka',
+    price: 8000,
+    category: 'refresher',
+    description: 'Kesegaran rasa buah semangka merah berair dingin di tenggorokan.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'anggur',
+    name: 'Nutrisari Anggur',
+    price: 8000,
+    category: 'refresher',
+    description: 'Sensasi manis segar eksotis buah anggur ungu pilihan.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'mangga',
+    name: 'Nutrisari Mangga',
+    price: 8000,
+    category: 'refresher',
+    description: 'Manisnya mangga harum manis tropis yang matang sempurna.',
+    image: 'https://images.unsplash.com/photo-1613478223719-2ab80260f42c?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'lychee',
+    name: 'Nutrisari Lychee',
+    price: 8000,
+    category: 'refresher',
+    description: 'Wangi harum manis buah leci merah dingin menyegarkan hari Anda.',
     image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'nc8',
-    name: 'Peach Tea (Iced)',
-    price: 25000,
-    category: 'non-coffee',
-    description: 'Teh hitam dingin menyegarkan dengan rasa buah persik manis aromatik segar.',
-    image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?q=80&w=600&auto=format&fit=crop'
+    id: 'cincau',
+    name: 'Nutrisari Cincau',
+    price: 8000,
+    category: 'refresher',
+    description: 'Rasa cincau hitam tradisional menyejukkan penurun panas dalam.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'nc9',
-    name: 'Lemon Tea',
-    price: 22000,
-    category: 'non-coffee',
-    description: 'Teh hitam klasik diseduh hangat atau dingin dipadukan dengan perasan lemon asli asam segar.',
-    image: 'https://images.unsplash.com/photo-1515467389143-652f416d7a46?q=80&w=600&auto=format&fit=crop',
-    variants: [
-      { name: 'Panas', price: 22000 },
-      { name: 'Dingin', price: 24000 }
-    ]
-  },
-  {
-    id: 'nc10',
-    name: 'Regular Tea',
-    price: 15000,
-    category: 'non-coffee',
-    description: 'Seduhan teh melati tradisional pilihan aromatik menenangkan disajikan manis atau tawar.',
-    image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=600&auto=format&fit=crop',
-    variants: [
-      { name: 'Panas', price: 15000 },
-      { name: 'Dingin', price: 17000 }
-    ]
+    id: 'jambu',
+    name: 'Nutrisari Jambu',
+    price: 8000,
+    category: 'refresher',
+    description: 'Minuman rasa jambu biji merah manis wangi segar berenergi.',
+    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
   },
 
-  // MAIN COURSE
+  // ==========================================
+  // MAINCOURSE (main-course)
+  // ==========================================
   {
-    id: 'mc1',
-    name: 'Nasi Goreng Kampung',
-    price: 35000,
+    id: 'indomie',
+    name: 'Indomie (Goreng/Rebus)',
+    price: 9000,
     category: 'main-course',
-    description: 'Nasi goreng bumbu tradisional Jawa dengan suwiran ayam, telor ceplok, kerupuk, dan acar segar.',
-    image: 'https://images.unsplash.com/photo-1603133872878-6967b68270c6?q=80&w=600&auto=format&fit=crop'
+    description: 'Indomie instan favorit (pilihan Goreng atau Rebus polos).',
+    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'mc2',
-    name: 'Nasi Goreng Seafood',
-    price: 40000,
+    id: 'indomie-telur',
+    name: 'Indomie + Telur',
+    price: 12000,
     category: 'main-course',
-    description: 'Nasi goreng spesial dengan isian udang segar empuk, cumi, bakso ikan, telur, dan kerupuk udang.',
-    image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop'
+    description: 'Indomie instan Goreng / Rebus disajikan dengan telur matang hangat.',
+    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'mc3',
-    name: 'Nasi Goreng Gila',
-    price: 38000,
+    id: 'indomie-double',
+    name: 'Indomie Double',
+    price: 14000,
     category: 'main-course',
-    description: 'Nasi goreng dengan topping melimpah orak-arik bakso sapi, sosis, ayam bumbu pedas manis gurih.',
-    image: 'https://images.unsplash.com/photo-1603133872878-6967b68270c6?q=80&w=600&auto=format&fit=crop'
+    description: 'Porsi ganda (2 bungkus) Indomie instan tanpa telur untuk rasa puas maksimal.',
+    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'mc4',
-    name: 'Mie Goreng Jawa',
-    price: 32000,
+    id: 'indomie-double-telur',
+    name: 'Indomie Double + Telur',
+    price: 16000,
     category: 'main-course',
-    description: 'Mie telur kenyal digoreng bumbu Jawa manis gurih sedikit pedas dengan sayuran dan suwiran ayam.',
+    description: 'Dua bungkus Indomie instan jumbo komplit disajikan dengan sebutir telur hangat.',
+    image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'mie-nyemek',
+    name: 'Mie Nyemek Warkop',
+    price: 20000,
+    category: 'main-course',
+    description: 'Indomie dimasak basah nyemek dengan bumbu pedas, telur orak-arik, sayuran, dan irisan cabai.',
     image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'mc5',
-    name: 'Mie Rebus Jawa',
-    price: 32000,
+    id: 'spaghetti',
+    name: 'Spaghetti',
+    price: 15000,
     category: 'main-course',
-    description: 'Mie telur disajikan kuah kaldu kental gurih hangat dengan telur bebek hancur, ayam, dan kol segar.',
-    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'mc6',
-    name: 'Kwetiau Goreng (Ayam/Sapi)',
-    price: 35000,
-    category: 'main-course',
-    description: 'Kwetiau beras pipih digoreng kecap manis gurih dengan pilihan suwiran ayam atau potongan daging sapi.',
-    image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'mc7',
-    name: 'Ayam Goreng Mentega + Nasi',
-    price: 42000,
-    category: 'main-course',
-    description: 'Daging ayam goreng garing disiram saus mentega kecap inggris kental manis gurih disajikan + nasi hangat.',
-    image: 'https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'mc8',
-    name: 'Ayam Geprek Sambal Matah + Nasi',
-    price: 35000,
-    category: 'main-course',
-    description: 'Ayam krispi garing gurih digeprek pedas disajikan dengan siraman sambal matah Bali segar + nasi.',
-    image: 'https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'mc9',
-    name: 'Chicken Katsu Curry Rice',
-    price: 45000,
-    category: 'main-course',
-    description: 'Ayam katsu krispi dibalur tepung panir disajikan dengan nasi hangat dan siraman kuah kari Jepang kental harum.',
-    image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'mc10',
-    name: 'Beef Teriyaki Rice Bowl',
-    price: 48000,
-    category: 'main-course',
-    description: 'Irisan daging sapi US tenderloin empuk ditumis bumbu teriyaki manis gurih di atas mangkuk nasi hangat.',
-    image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'mc11',
-    name: 'Spaghetti Bolognese',
-    price: 38000,
-    category: 'main-course',
-    description: 'PAsta spaghetti al dente disiram saus marinara tomat daging sapi cincang manis gurih melimpah.',
+    description: 'Pasta spaghetti disiram saus bolognese asam manis gurih tabur keju.',
     image: 'https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'mc12',
-    name: 'Spaghetti Carbonara',
-    price: 42000,
+    id: 'nasi-goreng-biasa',
+    name: 'Nasi Goreng Biasa',
+    price: 18000,
     category: 'main-course',
-    description: 'PAsta spaghetti creamy saus susu krim keju gurih dengan taburan irisan smoked beef krispi wangi.',
-    image: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=600&auto=format&fit=crop'
+    description: 'Nasi goreng bumbu racikan rumahan gurih khas warkop, dilengkapi kerupuk.',
+    image: 'https://images.unsplash.com/photo-1603133872878-6967b68270c6?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 'mc13',
-    name: 'Spaghetti Aglio Olio',
-    price: 35000,
+    id: 'nasi-goreng-sosis',
+    name: 'Nasi Goreng Sosis',
+    price: 19000,
     category: 'main-course',
-    description: 'PAsta spaghetti ditumis bawang putih wangi, minyak zaitun, potongan cabai rawit pedas, dan ayam.',
-    image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?q=80&w=600&auto=format&fit=crop'
+    description: 'Nasi goreng wangi khas dengan potongan sosis sapi melimpah.',
+    image: 'https://images.unsplash.com/photo-1603133872878-6967b68270c6?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'nasi-goreng-baso',
+    name: 'Nasi Goreng Baso',
+    price: 19000,
+    category: 'main-course',
+    description: 'Nasi goreng gurih dengan topping irisan bakso sapi kenyal.',
+    image: 'https://images.unsplash.com/photo-1603133872878-6967b68270c6?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'nasi-goreng-baso-sosis',
+    name: 'Nasi Goreng Baso + Sosis',
+    price: 22000,
+    category: 'main-course',
+    description: 'Kombinasi nasi goreng komplit bertabur potongan bakso sapi dan sosis gurih.',
+    image: 'https://images.unsplash.com/photo-1603133872878-6967b68270c6?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'nasi-goreng-spesial',
+    name: 'Nasi Goreng Spesial',
+    price: 25000,
+    category: 'main-course',
+    description: 'Nasi goreng komplit dengan sosis, bakso sapi, dan topping telur dadar/mata sapi.',
+    image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'kwetiau-rembus-goreng',
+    name: 'Kwetiau (Rebus/Goreng)',
+    price: 18000,
+    category: 'main-course',
+    description: 'Kwetiau beras kenyal dimasak Goreng manis gurih atau Kuah Rebus hangat.',
+    image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'nasi-gila-astha',
+    name: 'Nasi Gila Astha',
+    price: 25000,
+    category: 'main-course',
+    description: 'Nasi putih disajikan dengan tumisan super pedas manis bakso, sosis, telur, dan ayam orak-arik gila.',
+    image: 'https://images.unsplash.com/photo-1603133872878-6967b68270c6?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'nasi-teriyaki-ayam',
+    name: 'Nasi Teriyaki Ayam',
+    price: 18000,
+    category: 'main-course',
+    description: 'Nasi dengan tumisan ayam bumbu teriyaki khas Jepang manis gurih.',
+    image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'
   },
 
-  // SNACKS & LIGHT MEALS
+  // ==========================================
+  // SNACKS, PANCONG & LIGHT MEALS (snack)
+  // ==========================================
+  // PANCONG 8K BASE WITH TOPPINGS
   {
-    id: 's1',
-    name: 'French Fries',
-    price: 20000,
+    id: 'pancong-coklat',
+    name: 'Pancong Coklat',
+    price: 12000,
     category: 'snack',
-    description: 'Kentang goreng impor potongan lurus bertabur garam gurih renyah hangat, disajikan dengan saus sambal.',
-    image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=600&auto=format&fit=crop'
+    description: 'Kue pancong khas lumer empuk gurih berselimut taburan meses cokelat manis (Base 8K + 4K).',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 's2',
-    name: 'Potato Wedges',
-    price: 22000,
+    id: 'pancong-keju',
+    name: 'Pancong Keju',
+    price: 13000,
     category: 'snack',
-    description: 'Potongan kentang tebal berkulit dibumbui rempah asin gurih wangi bawang lalu digoreng garing.',
-    image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=600&auto=format&fit=crop'
+    description: 'Kue pancong lumer tradisional bertabur keju cheddar parut melimpah (Base 8K + 5K).',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 's3',
-    name: 'Cireng Rujak',
+    id: 'pancong-strawberry',
+    name: 'Pancong Strawberry',
+    price: 13000,
+    category: 'snack',
+    description: 'Kue pancong lumer disiram selai stroberi manis asam segar (Base 8K + 5K).',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'pancong-taro',
+    name: 'Pancong Taro',
+    price: 13000,
+    category: 'snack',
+    description: 'Kue pancong manis dengan glaze rasa taro talas ungu legit (Base 8K + 5K).',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'pancong-choco-crunchy',
+    name: 'Pancong Choco Crunchy',
+    price: 14000,
+    category: 'snack',
+    description: 'Kue pancong kekinian bersiram cokelat lumer krispi crunchy menggoda (Base 8K + 6K).',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'pancong-tiramisu',
+    name: 'Pancong Tiramisu',
+    price: 14000,
+    category: 'snack',
+    description: 'Kue pancong dengan olesan glaze tiramisu kopi manis aromatik (Base 8K + 6K).',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'pancong-matcha',
+    name: 'Pancong Matcha',
+    price: 15000,
+    category: 'snack',
+    description: 'Kue pancong lumer disiram saus matcha hijau manis gurih wangi teh hijau (Base 8K + 7K).',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
+  },
+  // PANCONG PREMIUM
+  {
+    id: 'pancong-lotus-biscoff',
+    name: 'Pancong Lotus Biscoff',
     price: 18000,
     category: 'snack',
-    description: 'Camilan aci goreng garing kenyal hangat disajikan dengan cocolan saus rujak asam pedas manis segar.',
-    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop'
+    description: 'Kue pancong premium bersiram selai speculoos Lotus Biscoff manis karamel rempah.',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 's4',
-    name: 'Tahu Cabe Garam',
-    price: 22000,
+    id: 'pancong-kitkat',
+    name: 'Pancong Kit Kat',
+    price: 18000,
     category: 'snack',
-    description: 'Tahu sutra krispi dipotong kotak ditumis bumbu bawang putih wangi garing dan cabai pedas asin gurih.',
-    image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=600&auto=format&fit=crop'
+    description: 'Kue pancong premium bertabur remahan cokelat wafer Kit Kat renyah.',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
   },
   {
-    id: 's5',
-    name: 'Singkong Goreng Keju',
+    id: 'pancong-ovaltine',
+    name: 'Pancong Ovaltine',
+    price: 18000,
+    category: 'snack',
+    description: 'Kue pancong premium bertabur bubuk cokelat Ovaltine tebal bergizi.',
+    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop'
+  },
+  // ROTI PANGGANG (ROPANG)
+  {
+    id: 'ropang-coklat',
+    name: 'Ropang Coklat',
+    price: 13000,
+    category: 'snack',
+    description: 'Roti panggang mentega isi cokelat meses manis panggang wangi.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-keju',
+    name: 'Ropang Keju',
+    price: 15000,
+    category: 'snack',
+    description: 'Roti panggang mentega dengan parutan keju gurih melimpah.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-coklat-keju-susu',
+    name: 'Ropang Coklat Keju Susu',
+    price: 18000,
+    category: 'snack',
+    description: 'Menu favorit! Roti bakar bertabur cokelat meses, parutan keju, dan siraman kental manis.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-blueberry',
+    name: 'Ropang Blueberry',
+    price: 15000,
+    category: 'snack',
+    description: 'Roti panggang mentega isi selai buah blueberry manis asam segar.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-strawberry',
+    name: 'Ropang Strawberry',
+    price: 15000,
+    category: 'snack',
+    description: 'Roti panggang mentega isi selai stroberi merah manis segar.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-blueberry-keju',
+    name: 'Ropang Blueberry Keju',
+    price: 15000,
+    category: 'snack',
+    description: 'Roti bakar isi selai blueberry manis berpadu gurihnya keju parut.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-blueberry-coklat',
+    name: 'Ropang Blueberry Coklat',
+    price: 15000,
+    category: 'snack',
+    description: 'Roti bakar dengan olesan selai blueberry manis dan cokelat meses.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-strawberry-keju',
+    name: 'Ropang Strawberry Keju',
+    price: 15000,
+    category: 'snack',
+    description: 'Roti bakar mentega isi selai stroberi segar tabur keju parut.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'ropang-strawberry-coklat',
+    name: 'Ropang Strawberry Coklat',
+    price: 15000,
+    category: 'snack',
+    description: 'Roti bakar manis isi selai stroberi merah dan taburan cokelat meses.',
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=600&auto=format&fit=crop'
+  },
+  // PISANG PANGGANG
+  {
+    id: 'pisang-panggang-susu',
+    name: 'Pisang Panggang Susu',
+    price: 10000,
+    category: 'snack',
+    description: 'Pisang panggang mentega manis gurih disiram kental manis lezat.',
+    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'pisang-panggang-coklat',
+    name: 'Pisang Panggang Coklat',
+    price: 14000,
+    category: 'snack',
+    description: 'Pisang panggang manis diselimuti taburan cokelat meses melimpah.',
+    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'pisang-panggang-keju',
+    name: 'Pisang Panggang Keju',
+    price: 15000,
+    category: 'snack',
+    description: 'Pisang kepok panggang mentega ditaburi keju parut gurih.',
+    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'pisang-panggang-coklat-keju',
+    name: 'Pisang Panggang Coklat Keju',
+    price: 17000,
+    category: 'snack',
+    description: 'Menu favorit! Pisang panggang bertabur cokelat meses manis dan parutan keju gurih.',
+    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=600&auto=format&fit=crop'
+  },
+  // CEMILAN LAINNYA
+  {
+    id: 'otak-otak',
+    name: 'Otak Otak',
+    price: 13000,
+    category: 'snack',
+    description: 'Otak-otak ikan goreng gurih kenyal renyah, disajikan dengan saus sambal.',
+    image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'sosis',
+    name: 'Sosis',
+    price: 13000,
+    category: 'snack',
+    description: 'Sosis sapi goreng gurih dengan saus sambal cocolan.',
+    image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'kentang',
+    name: 'Kentang',
+    price: 15000,
+    category: 'snack',
+    description: 'Kentang goreng renyah bumbu asin gurih hangat.',
+    image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'mix-platter',
+    name: 'Mix Platter',
     price: 20000,
     category: 'snack',
-    description: 'Singkong goreng mekar empuk renyah bertabur keju cheddar parut melimpah di atasnya.',
+    description: 'Kombinasi kentang goreng renyah, sosis sapi, dan otak-otak gurih.',
+    image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'cireng',
+    name: 'Cireng',
+    price: 15000,
+    category: 'snack',
+    description: 'Aci goreng garing kenyal hangat disajikan dengan saus bumbu rujak pedas manis.',
     image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 's6',
-    name: 'Pisang Goreng Cokelat Keju',
-    price: 22000,
-    category: 'snack',
-    description: 'Pisang kepok goreng krispi manis bertabur meses cokelat manis dan parutan keju gurih melimpah.',
-    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 's7',
-    name: 'Chicken Wings (6 pcs)',
-    price: 32000,
-    category: 'snack',
-    description: 'Sayap ayam goreng garing krispi dibaluri saus BBQ pedas manis gurih lezat isi 6 buah.',
-    image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 's8',
-    name: 'Calamari Rings',
-    price: 30000,
-    category: 'snack',
-    description: 'Cumi cincin dibalur tepung panir krispi digoreng garing disajikan dengan saus tartar cocolan.',
-    image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 's9',
-    name: 'Platter Mix (Fries, Sausage, Nugget)',
-    price: 38000,
-    category: 'snack',
-    description: 'Kombinasi kentang goreng renyah, sosis sapi bakar gurih, dan nugget ayam krispi hangat.',
-    image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 's10',
-    name: 'Roti Bakar Cokelat Keju',
-    price: 22000,
-    category: 'snack',
-    description: 'Roti tawar tebal bakar isi cokelat meses manis legit bertabur keju parut gurih melimpah.',
-    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 's11',
-    name: 'Roti Bakar Kaya Butter',
-    price: 20000,
-    category: 'snack',
-    description: 'Roti bakar garing wangi dioles mentega premium asin dan selai srikaya manis harum tradisional.',
-    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?q=80&w=600&auto=format&fit=crop'
-  },
-
-  // MOCKTAILS & REFRESHERS
-  {
-    id: 'r1',
-    name: 'Virgin Mojito',
-    price: 28000,
-    category: 'refresher',
-    description: 'Minuman dingin menyegarkan campuran perasan jeruk nipis asam, daun mint remuk, gula, dan soda.',
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'r2',
-    name: 'Lychee Mojito',
-    price: 30000,
-    category: 'refresher',
-    description: 'Campuran jeruk nipis, daun mint segar, buah leci manis asli, sirup, dan air soda dingin menyegarkan.',
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'r3',
-    name: 'Strawberry Mojito',
-    price: 30000,
-    category: 'refresher',
-    description: 'Sensasi asam manis dari buah strawberry segar hancur, mint harum, perasan jeruk nipis, dan air soda.',
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'r4',
-    name: 'Blue Ocean Soda',
-    price: 28000,
-    category: 'refresher',
-    description: 'Minuman soda biru segar dengan sirup jeruk curacao biru, leci manis, biji selasih, dan jeruk nipis.',
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'r5',
-    name: 'Mango Sunrise',
-    price: 28000,
-    category: 'refresher',
-    description: 'Perpaduan sirup mangga manis harum, jus jeruk segar dingin, dan siraman sirup grenadine merah cantik.',
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'r6',
-    name: 'Kiwi Blast',
-    price: 30000,
-    category: 'refresher',
-    description: 'Minuman penyegar rasa buah kiwi asam manis segar dipadukan dengan daun mint remuk dan soda dingin.',
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'r7',
-    name: 'Lemonade Cold Brew',
-    price: 32000,
-    category: 'refresher',
-    description: 'Perpaduan kopi cold brew khas kami dengan air jeruk lemon asam manis dingin yang mengejutkan.',
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop'
   }
 ];

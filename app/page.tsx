@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { MENU_ITEMS, MenuItem } from '../data/menu';
 import MobileFrame from '../components/MobileFrame';
-import { Search, Plus, Minus, Coffee, Sparkles, ShoppingBag } from 'lucide-react';
+import { Search, Plus, Minus, Coffee, Sparkles, ShoppingBag, QrCode } from 'lucide-react';
 import Link from 'next/link';
 
 function MenuContent() {
@@ -15,6 +15,25 @@ function MenuContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItemForVariant, setSelectedItemForVariant] = useState<MenuItem | null>(null);
   const [selectedVariantOption, setSelectedVariantOption] = useState<number>(0);
+  const [manualTable, setManualTable] = useState('');
+  const [hostIp, setHostIp] = useState('');
+
+  useEffect(() => {
+    fetch('/api/ip')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ip && data.ip !== 'localhost') {
+          setHostIp(data.ip);
+        } else if (typeof window !== 'undefined') {
+          setHostIp(window.location.hostname);
+        }
+      })
+      .catch(() => {
+        if (typeof window !== 'undefined') {
+          setHostIp(window.location.hostname);
+        }
+      });
+  }, []);
 
   const handleOpenVariantModal = (item: MenuItem) => {
     setSelectedItemForVariant(item);
@@ -26,11 +45,8 @@ function MenuContent() {
     const tableParam = searchParams.get('table');
     if (tableParam) {
       setTableNumber(tableParam);
-    } else if (!tableNumber) {
-      // Meja default jika tidak ada
-      setTableNumber('04');
     }
-  }, [searchParams, setTableNumber, tableNumber]);
+  }, [searchParams, setTableNumber]);
 
   // Filter menu berdasarkan tab kategori aktif dan query pencarian
   const filteredItems = MENU_ITEMS.filter((item) => {
@@ -78,6 +94,61 @@ function MenuContent() {
       default: return cat;
     }
   };
+
+  const getQrTargetUrl = () => {
+    if (typeof window !== 'undefined') {
+      const port = window.location.port ? `:${window.location.port}` : '';
+      return `${window.location.protocol}//${hostIp || 'localhost'}${port}/?table=04`;
+    }
+    return '';
+  };
+
+  const welcomeQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getQrTargetUrl())}`;
+
+  if (!tableNumber) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[550px] px-6 text-center py-10 bg-[#0f0804] text-white">
+        <div className="w-16 h-16 rounded-full bg-amber-700/20 text-amber-500 flex items-center justify-center mb-4 border border-amber-500/20">
+          <Coffee size={28} className="stroke-[2]" />
+        </div>
+        
+        <h2 className="text-3xl font-black bg-gradient-to-r from-amber-200 via-amber-300 to-yellow-100 bg-clip-text text-transparent">
+          Warkop Astha
+        </h2>
+        <p className="text-[11px] text-stone-300 mt-2 font-medium max-w-[280px] leading-relaxed">
+          Selamat datang! Silakan scan kode QR di bawah menggunakan HP Anda untuk membuka menu dan memesan dari meja.
+        </p>
+
+        {/* Real Dynamic QR Code Display */}
+        <div className="my-6 p-4 bg-white rounded-3xl shadow-2xl relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={welcomeQrUrl}
+            alt="Pindai QR untuk Memesan"
+            className="w-40 h-40 object-cover"
+          />
+        </div>
+
+        {/* IP Config Field for Mobile Connection */}
+        <div className="w-full max-w-[260px] space-y-2 mb-6 text-left">
+          <label className="block text-[9px] text-stone-400 font-black uppercase tracking-wider text-center">
+            Ubah IP/Host (Bila scan pakai HP di jaringan Wi-Fi lokal)
+          </label>
+          <input
+            type="text"
+            placeholder="Contoh: 192.168.1.5"
+            value={hostIp}
+            onChange={(e) => setHostIp(e.target.value)}
+            className="w-full text-center bg-white/10 hover:bg-white/15 focus:bg-white/20 rounded-xl border border-white/10 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 px-3 py-2 text-xs font-bold text-white placeholder-stone-600 focus:outline-none transition-all duration-300"
+          />
+        </div>
+
+        <div className="bg-amber-950/25 border border-amber-500/10 px-4 py-3 rounded-2xl text-[9px] text-amber-200/80 font-bold max-w-[260px] leading-relaxed">
+          Target Link: <code className="text-[8px] text-amber-300 break-all select-all block mt-0.5">{getQrTargetUrl()}</code>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-full">
@@ -275,8 +346,14 @@ function MenuContent() {
 
       {/* Variant Selection Modal */}
       {selectedItemForVariant && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 border border-cafe-100 shadow-2xl animate-fade-in">
+        <div 
+          onClick={() => setSelectedItemForVariant(null)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl max-w-sm w-full p-6 border border-cafe-100 shadow-2xl animate-fade-in"
+          >
             <h3 className="text-lg font-black text-cafe-900 mb-1">{selectedItemForVariant.name}</h3>
             <p className="text-xs text-cafe-500 font-bold mb-4">{selectedItemForVariant.description}</p>
 

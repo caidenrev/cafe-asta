@@ -11,7 +11,8 @@ import {
   Clock,
   ChevronRight,
   UtensilsCrossed,
-  Inbox
+  Inbox,
+  QrCode
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -137,7 +138,14 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/qr"
+            className="text-xs bg-amber-750 hover:bg-amber-800 text-white px-4 py-2.5 rounded-full font-bold transition-all scale-active flex items-center gap-1.5"
+          >
+            <QrCode size={13} />
+            <span>Cetak QR Meja</span>
+          </Link>
           <Link
             href="/"
             className="text-xs bg-cafe-100 hover:bg-cafe-200 text-cafe-700 px-4 py-2.5 rounded-full font-bold transition-all scale-active"

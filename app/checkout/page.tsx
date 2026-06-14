@@ -47,6 +47,29 @@ export default function CheckoutPage() {
   const serviceCharge = cartTotal > 0 ? 3000 : 0;
   const grandTotal = cartTotal + taxAmount + serviceCharge;
 
+  const [origin, setOrigin] = useState('http://localhost:3000');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      fetch('/api/ip')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.ip && data.ip !== 'localhost') {
+            const port = window.location.port ? `:${window.location.port}` : '';
+            setOrigin(`${window.location.protocol}//${data.ip}${port}`);
+          } else {
+            setOrigin(window.location.origin);
+          }
+        })
+        .catch(() => {
+          setOrigin(window.location.origin);
+        });
+    }
+  }, []);
+
+  const paymentLink = `${origin}/pay?table=${inputTable || tableNumber}&amount=${grandTotal}`;
+  const paymentQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(paymentLink)}`;
+
   // Jika keranjang kosong dan tidak sedang mengirim, arahkan kembali ke menu
   useEffect(() => {
     if (cart.length === 0 && !isSubmitting) {
@@ -158,10 +181,10 @@ export default function CheckoutPage() {
             <div className="absolute bottom-6 right-6 w-5 h-5 border-b-4 border-r-4 border-amber-700 rounded-br-lg"></div>
 
             {/* Gambar QR */}
-            <div className="w-56 h-56 relative rounded-2xl overflow-hidden bg-white shadow-sm flex items-center justify-center">
+            <div className="w-56 h-56 relative rounded-2xl overflow-hidden bg-white shadow-sm flex items-center justify-center p-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/qris-dummy.png"
+                src={paymentQrUrl}
                 alt="Kode QRIS Warkop Asta"
                 className="w-full h-full object-cover transition-opacity duration-300"
               />

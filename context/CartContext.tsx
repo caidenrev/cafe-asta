@@ -28,17 +28,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [tableNumber, setTableNumberState] = useState<string>('');
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load cart and table number from localStorage on client-side mount
+  // Load cart from localStorage on client-side mount
   useEffect(() => {
     try {
       const storedCart = localStorage.getItem('cafe_qr_cart');
-      const storedTable = localStorage.getItem('cafe_qr_table');
       
       if (storedCart) {
         setCart(JSON.parse(storedCart));
-      }
-      if (storedTable) {
-        setTableNumberState(storedTable);
       }
     } catch (e) {
       console.error('Failed to load cart state:', e);
