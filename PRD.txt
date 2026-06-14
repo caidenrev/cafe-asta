@@ -1,0 +1,188 @@
+Act as an expert Full-Stack Next.js 14 developer. I want to build a prototype for a Cafe QR Ordering System using Next.js (App Router), React, Tailwind CSS, and standard UI components (like shadcn/ui or simple custom Tailwind components). 
+
+Please generate the complete boilerplate and code structure for this prototype based on the following requirements:
+
+1. ARCHITECTURE & PAGES:
+- `/` (Customer Menu Page): Displays a grid of mock menu items.
+- `/cart` (Customer Cart Page): Shows selected items, allows quantity adjustment.
+- `/checkout` (Customer Checkout Page): Requires an input for "Table Number" and displays a static Dummy QRIS image for payment simulation. Includes a "Confirm Payment" button.
+- `/success` (Customer Success Page): A confirmation screen showing the order ID and "Your order is being processed".
+- `/admin` (Admin Dashboard): A protected or separate route that displays a data table of incoming orders.
+
+2. STATE & DATA (MOCK DATA):
+- Create a mock array of menu items (Coffee, Non-Coffee, Snacks).
+- Use React Context or Zustand to manage the Customer's shopping cart state across the customer routes.
+- Create a mock state/store for Orders. When a customer confirms payment on `/checkout`, push the order data { id, tableNumber, items, total, status: 'Pending' } to this mock orders list.
+
+3. ADMIN FUNCTIONALITY:
+- The `/admin` page should display the list of orders.
+- Each order row should show: Order ID, Table Number, Items Summary, Total Price, and a Status Badge.
+- Provide a button on each row to update the order status: 'Pending' -> 'Processing' -> 'Completed'.
+
+4. UI/UX:
+- Use a mobile-first design for the customer pages (since they will scan via phone).
+- Use a desktop layout for the `/admin` dashboard.
+- Style with Tailwind CSS. Make it look clean, modern, and minimalist (like a modern coffee shop).
+
+Please provide the folder structure, the necessary context/store files, and the code for the main page components. Keep it functional for a prototype demonstration.
+
+PRD :
+1. Ringkasan Produk
+Sebuah aplikasi web berbasis Next.js untuk kafe yang memungkinkan pelanggan memesan makanan/minuman dan membayar secara mandiri melalui scan QR code di meja. Admin memiliki dashboard khusus untuk memantau dan memproses pesanan secara real-time.
+
+2. Aktor / Pengguna
+Customer (Pelanggan): Memindai QR, melihat menu, membuat pesanan, memasukkan nomor meja, dan melakukan pembayaran dummy QRIS.
+
+Admin (Staf Kafe): Memantau antrean pesanan masuk, memproses, dan menyelesaikan pesanan.
+
+3. Alur Pengguna (User Flow)
+Customer Flow:
+
+Scan QR Code di meja (mengarah ke URL beranda/menu).
+
+Melihat daftar menu beserta harga dan gambar.
+
+Menambahkan item ke dalam keranjang (Cart).
+
+Lanjut ke halaman Checkout.
+
+Memasukkan Nomor Meja (wajib).
+
+Sistem menampilkan total harga dan kode QRIS (Dummy).
+
+Pelanggan melakukan konfirmasi pembayaran.
+
+Diarahkan ke halaman "Pesanan Berhasil / Menunggu Diproses".
+
+Admin Flow:
+
+Masuk ke halaman /admin (menggunakan PIN atau login sederhana untuk prototipe).
+
+Melihat dashboard antrean pesanan (Daftar Order).
+
+Pesanan baru masuk dengan status Pending.
+
+Admin mengubah status menjadi Processing saat makanan dibuat.
+
+Admin mengubah status menjadi Completed saat makanan diantar ke meja.
+
+4. Kebutuhan Fungsional (Prototipe)
+Katalog Menu: Menampilkan daftar produk statis (mock data).
+
+State Management Keranjang: Menyimpan item yang dipilih pelanggan selama sesi aktif.
+
+Checkout & Validasi: Form input nomor meja (angka) dan integrasi tampilan gambar statis QRIS.
+
+Admin Dashboard: Tabel real-time atau auto-refresh sederhana yang menampilkan ID Pesanan, Nomor Meja, Daftar Item, Total Harga, dan Status.
+
+5. Struktur Data (Mock Database/Model)
+Untuk prototipe, data ini bisa dibuat menggunakan state/konteks atau database ringan seperti SQLite.
+
+Menu Item: id, name, price, category, image_url
+
+Order: id, table_number, items (array), total_amount, status (Pending/Processing/Completed), timestamp
+
+Implementation Plan - Cafe QR Ordering System Prototype
+We will build a high-fidelity prototype of a Cafe QR Ordering System using Next.js 14 (App Router), TypeScript, and Tailwind CSS.
+
+To deliver a premium experience, the customer pages will have a mobile-first design (rendered inside a realistic mobile device mockup frame when viewed on desktop, and full screen on mobile devices). The admin panel will use a modern, sleek desktop dashboard interface with real-time state updates using polling.
+
+User Review Required
+IMPORTANT
+
+Data Persistence Strategy: To prevent data loss on page refreshes, we will use Next.js Route Handlers (/api/orders) backed by a simple in-memory store in the Next.js dev server. This allows the /admin dashboard and the customer /checkout flow to communicate seamlessly without sharing the same React context instance.
+
+Styling & Assets: We will use custom Tailwind CSS components with a modern warm-minimalist color scheme (creams, warm ambers, deep chocolates) matching a premium coffee shop. We will generate a mock QRIS image for payment simulation using the image generation tool.
+
+Proposed Changes
+We will create a new Next.js project under C:\Users\Devin\.gemini\antigravity-ide\scratch\cafe-qr-ordering.
+
+1. Project Initialization & Setup
+We will initialize the project using:
+
+bash
+
+cmd.exe /c npx -y create-next-app@14 cafe-qr-ordering --ts --tailwind --eslint --app --src-dir=false --use-npm
+Wait, we will use --src-dir=false if we want root-level directories, or --src-dir to keep it clean. Let's initialize without --src-dir (root-level app/ is standard and easier to browse).
+
+2. State & Database Layer
+We will define:
+
+data/menu.ts: Statics list of coffee, non-coffee, and snack items.
+context/CartContext.tsx: Client-side context containing cart items, quantities, table number, and clear functions.
+app/api/orders/route.ts: API handler to fetch and create orders in an in-memory database.
+app/api/orders/[id]/route.ts: API handler to update status of a specific order.
+3. Customer Routes (Mobile-First)
+All customer pages will share a layout or wrapper that renders a responsive mobile view. On desktop, this displays as a sleek smartphone frame centered on the page. On mobile, it displays native full screen.
+
+/ (Customer Menu Page): Category filter tabs, list of items with images, price, short descriptions, and "Add to Cart" buttons. A floating cart button showing item count.
+/cart (Customer Cart Page): Selected items with quantity increment/decrement, subtotal, and checkout CTA.
+/checkout (Customer Checkout Page): Required form field for "Table Number" (number validation). Renders order summary, total, and a mockup QRIS payment code. "Confirm Payment" button will trigger order POST API.
+/success (Customer Success Page): Shows green success check, order ID, and status message.
+4. Admin Route (Desktop Dashboard)
+/admin (Admin Dashboard): Real-time orders dashboard. Displays key metrics (Pending, Processing, Completed) and a structured table of incoming orders.
+Each order displays: Order ID, Table Number, Items Summary (collapsible or badge lists), Total Price, Status Badge, and Action buttons (e.g., "Start Processing", "Mark as Completed").
+Technical Details & Directory Structure
+
+cafe-qr-ordering/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx                     (Customer Menu Page)
+│   ├── cart/
+│   │   └── page.tsx                 (Customer Cart Page)
+│   ├── checkout/
+│   │   └── page.tsx                 (Customer Checkout Page)
+│   ├── success/
+│   │   └── page.tsx                 (Customer Success Page)
+│   ├── admin/
+│   │   └── page.tsx                 (Admin Dashboard)
+│   └── api/
+│       └── orders/
+│           ├── route.ts             (GET all orders, POST new order)
+│           └── [id]/
+│               └── route.ts         (PATCH update order status)
+├── context/
+│   └── CartContext.tsx              (React Context for cart state)
+├── data/
+│   └── menu.ts                      (Mock menu data)
+├── components/
+│   ├── MobileFrame.tsx              (Layout container for customer mobile viewport)
+│   └── StatusBadge.tsx              (Reusable order status badge)
+├── public/
+│   └── qris-dummy.png               (Generated dummy QRIS image)
+Mock Menu Schema
+typescript
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  price: number;
+  category: 'coffee' | 'non-coffee' | 'snack';
+  description: string;
+  image: string;
+}
+Order Schema
+typescript
+
+export interface Order {
+  id: string;
+  tableNumber: string;
+  items: {
+    menuItem: MenuItem;
+    quantity: number;
+  }[];
+  total: number;
+  status: 'Pending' | 'Processing' | 'Completed';
+  createdAt: string;
+}
+Verification Plan
+Automated/Local Tests
+Run npm run build to verify there are no compilation/TypeScript errors.
+Run npm run dev and navigate to the application using a browser.
+Manual Verification
+Menu Page: Verify listing of categories (Coffee, Non-Coffee, Snacks), adding items to cart, floating indicator count updates.
+Cart Page: Modify quantity, remove items, verify subtotal calculations.
+Checkout Page: Leave table number blank to verify validation, check total price matches cart.
+Payment Confirmation: Click "Confirm Payment", verify redirection to /success page and cart gets cleared.
+Admin Dashboard: Open /admin in a separate tab/window, verify the order appears. Click "Start Processing" and "Mark Completed", check that status updates properly in the list.
+
