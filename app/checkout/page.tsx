@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../context/CartContext';
 import MobileFrame from '../../components/MobileFrame';
-import { QrCode, Lock, CreditCard, Sparkles, CheckCircle } from 'lucide-react';
+import { QrCode, Lock, CreditCard, Sparkles, CheckCircle, Clock, Download, RefreshCw } from 'lucide-react';
 import { STATIC_QRIS, generateDynamicQRIS } from '../../lib/qris';
 
 export default function CheckoutPage() {
@@ -28,6 +28,10 @@ export default function CheckoutPage() {
   const [paymentUrl, setPaymentUrl] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [isUpdatingPayment, setIsUpdatingPayment] = useState(false);
+  const [uniqueCode, setUniqueCode] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
+  const [isExpired, setIsExpired] = useState(false);
+  const [paymentDeadline, setPaymentDeadline] = useState('');
 
   // Perhitungan
   const taxAmount = 0;
@@ -43,6 +47,16 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
     setError('');
     try {
+      // Buat kode unik acak dari 10 - 999
+      const generatedUniqueCode = Math.floor(Math.random() * 990) + 10;
+      const finalTotal = grandTotal + generatedUniqueCode;
+      
+      setUniqueCode(generatedUniqueCode);
+
+      // Set batas waktu bayar (1 jam dari sekarang)
+      const deadline = new Date(Date.now() + 3600000);
+      setPaymentDeadline(deadline.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB');
+
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: {
@@ -52,7 +66,7 @@ export default function CheckoutPage() {
           tableNumber: inputTable,
           customerName: inputName,
           items: cart,
-          total: grandTotal,
+          total: finalTotal,
         }),
       });
 
@@ -70,7 +84,7 @@ export default function CheckoutPage() {
       // Buat tautan pembayaran QRIS dinamis untuk scan HP
       const protocol = window.location.protocol;
       const host = window.location.host;
-      const payUrl = `${protocol}//${host}/pay?id=${orderData.id}&amount=${grandTotal}&table=${inputTable}`;
+      const payUrl = `${protocol}//${host}/pay?id=${orderData.id}&amount=${finalTotal}&table=${inputTable}`;
       setPaymentUrl(payUrl);
       setIsVerifying(true);
     } catch (err) {
@@ -111,6 +125,31 @@ export default function CheckoutPage() {
     };
   }, [orderId, isVerifying, router, inputTable, clearCart]);
 
+  // Countdown timer effect
+  useEffect(() => {
+    if (!orderId || isExpired) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setIsExpired(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [orderId, isExpired]);
+
+  const formatTime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
+  };
+
   // Fungsi untuk memverifikasi secara manual bahwa pelanggan sudah membayar
   const handleVerifyPayment = async () => {
     if (!orderId || isUpdatingPayment) return;
@@ -145,7 +184,7 @@ export default function CheckoutPage() {
 
 
   // QR code dinamis ke URL pembayaran aktual QRIS
-  const dynamicQrisPayload = orderId ? generateDynamicQRIS(STATIC_QRIS, grandTotal) : '';
+  const dynamicQrisPayload = orderId ? generateDynamicQRIS(STATIC_QRIS, grandTotal + uniqueCode) : '';
   const paymentQrUrl = dynamicQrisPayload 
     ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(dynamicQrisPayload)}`
     : '/qris-dummy.png';
@@ -235,49 +274,122 @@ export default function CheckoutPage() {
 
         {/* Tampilan QRIS Scanner & Total tagihan */}
         {orderId && !isSubmitting && (
-          <div className="bg-white rounded-[2.5rem] border border-cafe-100 p-6 shadow-sm flex flex-col items-center justify-center relative overflow-hidden animate-fade-in">
-            {/* Pojok dekoratif scanner */}
-            <div className="absolute top-6 left-6 w-5 h-5 border-t-4 border-l-4 border-amber-700 rounded-tl-lg"></div>
-            <div className="absolute top-6 right-6 w-5 h-5 border-t-4 border-r-4 border-amber-700 rounded-tr-lg"></div>
-            <div className="absolute bottom-6 left-6 w-5 h-5 border-b-4 border-l-4 border-amber-700 rounded-bl-lg"></div>
-            <div className="absolute bottom-6 right-6 w-5 h-5 border-b-4 border-r-4 border-amber-700 rounded-br-lg"></div>
-
-            {/* Gambar QR */}
-            <div className="w-56 h-56 relative rounded-2xl overflow-hidden bg-white shadow-sm flex items-center justify-center p-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={paymentQrUrl}
-                alt="Kode QRIS Warkop Asta"
-                className="w-full h-full object-cover transition-opacity duration-300"
-              />
+          <div className="space-y-6 animate-fade-in">
+            {/* Header Biru Total Pembayaran */}
+            <div className="bg-blue-600 rounded-3xl p-6 text-center text-white shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+              <p className="text-xs font-black uppercase tracking-widest text-blue-100 mb-2">Total Pembayaran</p>
+              <h2 className="text-4xl font-black tracking-tight mb-2">{formatPrice(grandTotal + uniqueCode)}</h2>
+              <p className="text-[10px] sm:text-xs text-blue-100/90 font-medium px-4">
+                Pastikan nominal pembayaran sama dengan total ini agar sistem bisa memproses otomatis.
+              </p>
             </div>
 
-            {/* Jumlah Pembayaran directly inside the QR card section as per Request 8 */}
-            <div className="mt-4 text-center w-full">
-              <p className="text-xs text-cafe-500 font-black uppercase tracking-wider">Total Pembayaran</p>
-              <p className="text-2xl font-black text-amber-900 tracking-tight mt-1 mb-4">{formatPrice(grandTotal)}</p>
-              
-              <button
-                onClick={handleVerifyPayment}
-                disabled={isUpdatingPayment}
-                className={`w-full py-3.5 px-6 rounded-2xl text-xs font-black uppercase tracking-wider text-white shadow-md transition-all duration-300 scale-active flex items-center justify-center gap-2 ${
-                  isUpdatingPayment
-                    ? 'bg-stone-300 cursor-not-allowed opacity-60'
-                    : 'bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 cursor-pointer'
-                }`}
-              >
-                {isUpdatingPayment ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Memverifikasi...
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle size={16} className="stroke-[2.5]" />
-                    Saya Sudah Bayar
-                  </>
+            {/* Rincian Pembayaran */}
+            <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-5 space-y-4">
+              <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                <span className="text-xs font-bold text-stone-500">Metode Pembayaran</span>
+                <span className="text-xs font-black text-stone-800">QRIS</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                <span className="text-xs font-bold text-stone-500">Harga Produk</span>
+                <span className="text-xs font-black text-stone-800">{formatPrice(grandTotal)}</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                <span className="text-xs font-bold text-stone-500">Kode Unik</span>
+                <span className="text-xs font-black text-amber-600">Rp {uniqueCode}</span>
+              </div>
+              <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                <span className="text-xs font-bold text-stone-500">Status Pembayaran</span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-wider">
+                  <Clock size={12} className="animate-pulse" />
+                  Menunggu Pembayaran
+                </span>
+              </div>
+              <div className="flex justify-between items-center pt-1">
+                <span className="text-xs font-bold text-stone-500">Batas Waktu Pembayaran</span>
+                <span className="text-xs font-black text-stone-800">{paymentDeadline}</span>
+              </div>
+            </div>
+
+            {/* Scan QRIS Card */}
+            <div className="bg-white rounded-[2.5rem] border border-stone-200 p-6 shadow-sm flex flex-col items-center justify-center relative">
+              <div className="text-center mb-5">
+                <h3 className="text-lg font-black text-blue-700">Scan QRIS untuk Pembayaran</h3>
+                <p className="text-[10px] text-stone-500 mt-1 max-w-[280px] mx-auto font-medium">
+                  Gunakan mobile banking atau e-wallet yang mendukung QRIS. Jangan lupa cek nominal sebelum konfirmasi pembayaran.
+                </p>
+              </div>
+
+              {/* Gambar QR */}
+              <div className="w-56 h-56 relative rounded-2xl overflow-hidden bg-white shadow-sm border border-stone-100 flex items-center justify-center p-3 mb-5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={paymentQrUrl}
+                  alt="Kode QRIS Warkop Asta"
+                  className={`w-full h-full object-cover transition-opacity duration-300 ${isExpired ? 'opacity-20 grayscale' : ''}`}
+                />
+                {isExpired && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60 backdrop-blur-[2px]">
+                    <Lock size={32} className="text-red-500 mb-2" />
+                    <p className="text-xs font-black text-red-600 uppercase">Waktu Habis</p>
+                  </div>
                 )}
-              </button>
+              </div>
+
+              {/* Sisa Waktu */}
+              <div className="mb-6 flex justify-center">
+                <div className="inline-flex items-center gap-2 px-5 py-2 bg-amber-50 border border-amber-200 rounded-full">
+                  <span className="text-xs font-bold text-amber-800">Sisa waktu:</span>
+                  <span className="text-sm font-black text-red-600 tracking-wider">
+                    {formatTime(timeLeft)} WIB
+                  </span>
+                </div>
+              </div>
+
+              {/* Kendala info */}
+              <div className="w-full bg-orange-50 border border-orange-200 rounded-2xl p-4 mb-6">
+                <h4 className="text-xs font-black text-orange-800 flex items-center gap-1.5 mb-1.5">
+                  <span className="text-sm">💬</span> Kendala scan QRIS?
+                </h4>
+                <p className="text-[10px] text-orange-700/80 font-medium leading-relaxed">
+                  Jika QRIS sulit discan, tidak muncul, atau pembayaran belum masuk otomatis, silakan klik tombol <strong>Cek Status Pembayaran</strong> di bawah ini.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
+                <a
+                  href={paymentQrUrl}
+                  download="QRIS_Payment.png"
+                  className="flex-1 py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md transition-all duration-300 scale-active flex items-center justify-center gap-2"
+                >
+                  <Download size={16} className="stroke-[2.5]" />
+                  Download QR Code
+                </a>
+                
+                <button
+                  onClick={handleVerifyPayment}
+                  disabled={isUpdatingPayment || isExpired}
+                  className={`flex-1 py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all duration-300 scale-active flex items-center justify-center gap-2 border ${
+                    isUpdatingPayment || isExpired
+                      ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
+                      : 'bg-white text-stone-800 border-stone-200 hover:border-stone-300 hover:bg-stone-50 shadow-sm cursor-pointer'
+                  }`}
+                >
+                  {isUpdatingPayment ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-stone-400 border-t-transparent rounded-full animate-spin"></div>
+                      Mengecek...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw size={14} className="stroke-[2.5] text-blue-600" />
+                      Cek Status Pembayaran
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         )}
