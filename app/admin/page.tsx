@@ -59,23 +59,9 @@ export default function AdminDashboard() {
     }
   };
 
-  // Ambil IP host server lokal agar bisa di-scan via HP pada Wi-Fi lokal
+  // Gunakan URL production untuk QR Pelanggan
   useEffect(() => {
-    fetch('/api/ip')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.ip && data.ip !== 'localhost' && typeof window !== 'undefined') {
-          const port = window.location.port ? `:${window.location.port}` : '';
-          setMenuUrl(`${window.location.protocol}//${data.ip}${port}/menu`);
-        } else if (typeof window !== 'undefined') {
-          setMenuUrl(`${window.location.origin}/menu`);
-        }
-      })
-      .catch(() => {
-        if (typeof window !== 'undefined') {
-          setMenuUrl(`${window.location.origin}/menu`);
-        }
-      });
+    setMenuUrl('https://cafe-asta.vercel.app/menu');
   }, []);
 
   // Mengambil data pesanan dari API

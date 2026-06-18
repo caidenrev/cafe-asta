@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 
 export default function QRGeneratorPage() {
   const [tableNumber, setTableNumber] = useState('04');
-  const [hostType, setHostType] = useState<'local' | 'custom'>('local');
-  const [customHost, setCustomHost] = useState('');
-  const [origin, setOrigin] = useState('http://localhost:3000');
+  const [hostType, setHostType] = useState<'local' | 'custom'>('custom');
+  const [customHost, setCustomHost] = useState('https://cafe-asta.vercel.app');
+  const [origin, setOrigin] = useState('https://cafe-asta.vercel.app');
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -23,6 +23,8 @@ export default function QRGeneratorPage() {
   };
 
   useEffect(() => {
+    // Only attempt to fetch local IP if user explicitly wants local host,
+    // otherwise default to production host.
     fetch('/api/ip')
       .then((res) => res.json())
       .then((data) => {
@@ -30,16 +32,13 @@ export default function QRGeneratorPage() {
           const port = window.location.port ? `:${window.location.port}` : '';
           const localUrl = `${window.location.protocol}//${data.ip}${port}`;
           setOrigin(localUrl);
-          setCustomHost(localUrl);
         } else if (typeof window !== 'undefined') {
           setOrigin(window.location.origin);
-          setCustomHost(window.location.origin);
         }
       })
       .catch(() => {
         if (typeof window !== 'undefined') {
           setOrigin(window.location.origin);
-          setCustomHost(window.location.origin);
         }
       });
   }, []);
