@@ -19,9 +19,9 @@ export default function CartPage() {
   };
 
   // Perhitungan
-  const taxAmount = Math.round(cartTotal * 0.10); // Pajak Pembangunan 1 (PB1) 10%
-  const serviceCharge = cartTotal > 0 ? 3000 : 0; // Biaya Layanan Flat
-  const grandTotal = cartTotal + taxAmount + serviceCharge;
+  const taxAmount = 0;
+  const serviceCharge = 0;
+  const grandTotal = cartTotal;
 
   if (cart.length === 0) {
     return (
@@ -35,7 +35,7 @@ export default function CartPage() {
             Sepertinya Anda belum memilih menu makanan atau minuman. Silakan kembali untuk memesan hidangan favorit Anda.
           </p>
           <Link
-            href="/"
+            href="/menu"
             className="mt-8 bg-amber-700 hover:bg-amber-750 text-white font-bold text-xs px-6 py-3.5 rounded-full shadow-lg shadow-amber-900/10 transition-all duration-300 scale-active"
           >
             Jelajahi Menu
@@ -51,13 +51,7 @@ export default function CartPage() {
         
         {/* Kolom Kiri: Rincian Menu & Catatan (Lebar 2/3 di Desktop) */}
         <div className="flex-1 space-y-6">
-          {/* Banner Tag Nomor Meja */}
-          <div className="bg-amber-700/10 border border-amber-700/20 rounded-2xl p-4 flex justify-between items-center">
-            <span className="text-sm font-black text-amber-800">Meja Makan Anda:</span>
-            <span className="text-sm font-black bg-amber-700 text-white px-4 py-1.5 rounded-full shadow-sm">
-              Meja {tableNumber || '04'}
-            </span>
-          </div>
+
 
           <div>
             {/* Header Review Item */}
@@ -150,14 +144,6 @@ export default function CartPage() {
             <div className="flex justify-between text-sm font-bold text-cafe-500">
               <span>Subtotal</span>
               <span>{formatPrice(cartTotal)}</span>
-            </div>
-            <div className="flex justify-between text-sm font-bold text-cafe-500">
-              <span>Pajak (10% PB1)</span>
-              <span>{formatPrice(taxAmount)}</span>
-            </div>
-            <div className="flex justify-between text-sm font-bold text-cafe-500">
-              <span>Biaya Layanan & Kebersihan</span>
-              <span>{formatPrice(serviceCharge)}</span>
             </div>
             
             <div className="pt-2.5 border-t border-cafe-100 flex justify-between items-center">

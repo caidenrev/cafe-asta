@@ -17,6 +17,8 @@ interface CartContextType {
   clearCart: () => void;
   tableNumber: string;
   setTableNumber: (table: string) => void;
+  customerName: string;
+  setCustomerName: (name: string) => void;
   cartTotal: number;
   cartCount: number;
 }
@@ -26,6 +28,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [tableNumber, setTableNumberState] = useState<string>('');
+  const [customerName, setCustomerName] = useState<string>('');
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Load cart from localStorage on client-side mount
@@ -43,7 +46,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Sync cart and table number changes to localStorage
+  // Sync cart changes to localStorage
   useEffect(() => {
     if (!isInitialized) return;
     try {
@@ -55,11 +58,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const setTableNumber = (table: string) => {
     setTableNumberState(table);
-    try {
-      localStorage.setItem('cafe_qr_table', table);
-    } catch (e) {
-      console.error('Failed to save table number:', e);
-    }
   };
 
   const addToCart = (item: MenuItem, variant?: { name: string; price: number }) => {
@@ -119,6 +117,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart,
         tableNumber,
         setTableNumber,
+        customerName,
+        setCustomerName,
         cartTotal,
         cartCount,
       }}

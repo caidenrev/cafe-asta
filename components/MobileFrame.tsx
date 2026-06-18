@@ -13,13 +13,13 @@ interface MobileFrameProps {
 export default function MobileFrame({ children }: MobileFrameProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { cartCount } = useCart();
+  const { cartCount, tableNumber } = useCart();
 
   const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
   const [trackOrderId, setTrackOrderId] = useState('');
   const [trackError, setTrackError] = useState('');
 
-  const isHome = pathname === '/';
+  const isHome = pathname === '/' || pathname === '/menu';
   const isSuccess = pathname === '/success';
 
   const handleTrackSubmit = (e: React.FormEvent) => {
@@ -78,7 +78,7 @@ export default function MobileFrame({ children }: MobileFrameProps) {
           {/* Action Links */}
           <div className="flex items-center gap-3">
             {/* Lacak Pesanan Button */}
-            {pathname !== '/admin' && (
+            {pathname !== '/admin' && !(pathname === '/' && !tableNumber) && (
               <button
                 onClick={() => {
                   setIsTrackModalOpen(true);
@@ -92,7 +92,7 @@ export default function MobileFrame({ children }: MobileFrameProps) {
               </button>
             )}
 
-            {pathname !== '/cart' && pathname !== '/checkout' && !isSuccess && (
+            {pathname !== '/cart' && pathname !== '/checkout' && !isSuccess && !(pathname === '/' && !tableNumber) && (
               <Link
                 href="/cart"
                 className="relative p-2.5 rounded-full bg-cafe-100 hover:bg-cafe-200 text-cafe-700 transition-colors scale-active"

@@ -12,7 +12,8 @@ import {
   ChevronRight,
   UtensilsCrossed,
   Inbox,
-  QrCode
+  QrCode,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -29,6 +30,7 @@ interface OrderItem {
 
 interface Order {
   id: string;
+  customerName: string;
   tableNumber: string;
   items: OrderItem[];
   total: number;
@@ -41,6 +43,27 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [filter, setFilter] = useState<'All' | 'Pending' | 'Processing' | 'Completed'>('All');
+  const [showMenuQrModal, setShowMenuQrModal] = useState(false);
+  const [menuUrl, setMenuUrl] = useState('');
+
+  // Ambil IP host server lokal agar bisa di-scan via HP pada Wi-Fi lokal
+  useEffect(() => {
+    fetch('/api/ip')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ip && data.ip !== 'localhost' && typeof window !== 'undefined') {
+          const port = window.location.port ? `:${window.location.port}` : '';
+          setMenuUrl(`${window.location.protocol}//${data.ip}${port}/menu`);
+        } else if (typeof window !== 'undefined') {
+          setMenuUrl(`${window.location.origin}/menu`);
+        }
+      })
+      .catch(() => {
+        if (typeof window !== 'undefined') {
+          setMenuUrl(`${window.location.origin}/menu`);
+        }
+      });
+  }, []);
 
   // Mengambil data pesanan dari API
   const fetchOrders = async (silent = false) => {
@@ -146,12 +169,13 @@ export default function AdminDashboard() {
             <QrCode size={13} />
             <span>Cetak QR Meja</span>
           </Link>
-          <Link
-            href="/"
-            className="text-xs bg-cafe-100 hover:bg-cafe-200 text-cafe-700 px-4 py-2.5 rounded-full font-bold transition-all scale-active"
+          <button
+            onClick={() => setShowMenuQrModal(true)}
+            className="text-xs bg-cafe-100 hover:bg-cafe-200 text-cafe-700 px-4 py-2.5 rounded-full font-bold transition-all scale-active flex items-center gap-1.5"
           >
-            ← Buka App Pelanggan
-          </Link>
+            <QrCode size={13} />
+            <span>QR App Pelanggan</span>
+          </button>
           <button
             onClick={() => fetchOrders()}
             disabled={isRefreshing}
@@ -264,6 +288,7 @@ export default function AdminDashboard() {
                 <thead>
                   <tr className="bg-cafe-100/50 border-b border-cafe-150 text-[10px] font-black uppercase tracking-widest text-cafe-400">
                     <th className="px-6 py-4">ID</th>
+                    <th className="px-6 py-4">Pelanggan</th>
                     <th className="px-6 py-4">Meja</th>
                     <th className="px-6 py-4">Waktu Pesan</th>
                     <th className="px-6 py-4">Daftar Menu Pesanan</th>
@@ -281,6 +306,11 @@ export default function AdminDashboard() {
                       {/* ID Pesanan */}
                       <td className="px-6 py-4 font-black text-cafe-850">
                         {order.id}
+                      </td>
+
+                      {/* Nama Pelanggan */}
+                      <td className="px-6 py-4 font-black text-cafe-800 capitalize">
+                        {order.customerName || '-'}
                       </td>
 
                       {/* Nomor Meja */}
@@ -360,6 +390,66 @@ export default function AdminDashboard() {
       <footer className="py-6 border-t border-cafe-200 bg-white text-center text-xs text-cafe-400 font-bold select-none">
         Sistem Pintar Warkop Asta • Didukung oleh Next.js 14 App Router
       </footer>
+
+      {/* Modal QR Code Menu Pelanggan */}
+      {showMenuQrModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 border border-cafe-100 shadow-2xl animate-fade-in text-center flex flex-col items-center">
+            <div className="flex justify-between items-center w-full mb-3">
+              <h3 className="text-base font-black text-cafe-850">QR Code Menu Pelanggan</h3>
+              <button
+                onClick={() => setShowMenuQrModal(false)}
+                className="p-1 hover:bg-cafe-100 rounded-full text-cafe-400 hover:text-cafe-750 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            
+            <p className="text-xs text-cafe-500 font-bold mb-4">
+              Pindai QR di bawah untuk membuka daftar menu pelanggan langsung dari smartphone Anda.
+            </p>
+
+            {/* QR Code Container */}
+            <div className="p-4 bg-white border border-stone-150 rounded-2xl shadow-sm mb-4">
+              {menuUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(menuUrl)}`}
+                  alt="Menu QR"
+                  className="w-44 h-44 object-cover"
+                />
+              ) : (
+                <div className="w-44 h-44 flex items-center justify-center bg-stone-50 rounded-2xl">
+                  <div className="w-5 h-5 border-2 border-amber-700 border-t-transparent animate-spin"></div>
+                </div>
+              )}
+            </div>
+
+            <div className="w-full bg-stone-50 border border-stone-150 rounded-2xl p-3 mb-4 text-left">
+              <span className="text-[10px] text-stone-400 font-bold block mb-0.5">Target URL:</span>
+              <code className="text-[9.5px] font-bold text-amber-800 break-all select-all block leading-tight">
+                {menuUrl || 'Loading...'}
+              </code>
+            </div>
+
+            <div className="flex gap-2.5 w-full">
+              <button
+                onClick={() => setShowMenuQrModal(false)}
+                className="flex-1 py-3 text-xs font-bold text-cafe-500 hover:text-cafe-700 bg-cafe-50 hover:bg-cafe-100 rounded-xl transition-all scale-active"
+              >
+                Tutup
+              </button>
+              <Link
+                href="/menu"
+                target="_blank"
+                className="flex-1 py-3 text-xs font-black text-center text-white bg-amber-750 hover:bg-amber-800 rounded-xl shadow-md shadow-amber-900/10 transition-all scale-active"
+              >
+                Buka di Browser
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

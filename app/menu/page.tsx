@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
-import { MENU_ITEMS, MenuItem } from '../data/menu';
-import MobileFrame from '../components/MobileFrame';
+import { useCart } from '../../context/CartContext';
+import { MENU_ITEMS, MenuItem } from '../../data/menu';
+import MobileFrame from '../../components/MobileFrame';
 import { Search, Plus, Minus, Coffee, Sparkles, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 
@@ -319,7 +319,7 @@ function MenuContent() {
   );
 }
 
-export default function LandingQRPage() {
+export default function MenuPage() {
   return (
     <MobileFrame>
       <MenuContent />

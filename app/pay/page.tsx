@@ -8,7 +8,7 @@ import MobileFrame from '@/components/MobileFrame';
 function PaymentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [table, setTable] = useState('04');
+  const [table, setTable] = useState('');
   const [amount, setAmount] = useState(0);
   const [selectedWallet, setSelectedWallet] = useState<'gopay' | 'ovo' | 'dana' | 'shopeepay'>('gopay');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -30,7 +30,7 @@ function PaymentContent() {
     }).format(price);
   };
 
-  const handlePaymentSubmit = (e: React.FormEvent) => {
+  const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phoneNumber || phoneNumber.length < 10) {
       alert('Masukkan nomor HP e-wallet yang valid (Min. 10 digit).');
@@ -39,10 +39,31 @@ function PaymentContent() {
 
     setStatus('processing');
     
-    // Simulate API connection to E-wallet Gateway
-    setTimeout(() => {
-      setStatus('success');
-    }, 2500);
+    try {
+      const orderId = searchParams.get('id');
+      if (orderId) {
+        const response = await fetch(`/api/orders/${orderId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: 'Processing' }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Gagal memperbarui status pesanan');
+        }
+      }
+      
+      // Simulate API connection to E-wallet Gateway success delay
+      setTimeout(() => {
+        setStatus('success');
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+      alert('Terjadi kesalahan koneksi saat memproses pembayaran. Silakan coba lagi.');
+      setStatus('idle');
+    }
   };
 
   const walletConfig = {
@@ -85,7 +106,7 @@ function PaymentContent() {
         </p>
 
         <p className="text-xs text-stone-500 max-w-[80%] mt-4 leading-relaxed font-medium">
-          Pembayaran Anda sebesar <strong className="text-stone-900 font-extrabold">{formatPrice(amount)}</strong> untuk <strong>Meja {table}</strong> telah berhasil diproses.
+          Pembayaran Anda sebesar <strong className="text-stone-900 font-extrabold">{formatPrice(amount)}</strong> untuk <strong>Meja {table || '-'}</strong> telah berhasil diproses.
         </p>
 
         <div className="w-full bg-white border border-stone-200 rounded-3xl p-5 mt-8 space-y-3 shadow-sm text-left">
@@ -95,7 +116,7 @@ function PaymentContent() {
           </div>
           <div className="flex justify-between text-xs font-bold text-stone-500">
             <span>Nomor Meja</span>
-            <span className="text-stone-900">Meja {table}</span>
+            <span className="text-stone-900">Meja {table || '-'}</span>
           </div>
           <div className="flex justify-between text-xs font-bold text-stone-500">
             <span>Nomor E-wallet</span>
@@ -107,8 +128,8 @@ function PaymentContent() {
           </div>
         </div>
 
-        <div className="mt-8 bg-amber-50 border border-amber-200/80 rounded-2xl p-4 text-[10px] text-amber-950 font-bold leading-relaxed max-w-[280px]">
-          👍 Silakan tekan tombol <strong>"Konfirmasi Pembayaran Berhasil"</strong> di layar pesanan Anda untuk menyelesaikan transaksi.
+        <div className="mt-8 bg-amber-50 border border-amber-200/80 rounded-2xl p-4 text-[10px] text-amber-955 font-bold leading-relaxed max-w-[280px]">
+          👍 Halaman pesanan utama Anda akan otomatis terkonfirmasi secara instan setelah pembayaran ini.
         </div>
       </div>
     );

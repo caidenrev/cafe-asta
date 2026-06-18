@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { executeQuery } from '@/lib/db';
 
@@ -75,6 +77,7 @@ export async function GET(
 
     return NextResponse.json({
       id: order.id,
+      customerName: order.customer_name || '',
       tableNumber: order.table_number,
       total: parseFloat(order.total_amount),
       status: order.status,

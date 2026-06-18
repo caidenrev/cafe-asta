@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { executeQuery, getPool } from '@/lib/db';
 
@@ -20,6 +22,7 @@ export interface OrderItem {
 
 export interface Order {
   id: string;
+  customerName: string;
   tableNumber: string;
   items: OrderItem[];
   total: number;
@@ -53,6 +56,7 @@ export async function GET() {
     // Merge database rows into typed Order objects
     const orders: Order[] = dbOrders.map((order) => ({
       id: order.id,
+      customerName: order.customer_name || '',
       tableNumber: order.table_number,
       total: parseFloat(order.total_amount),
       status: order.status,
@@ -73,11 +77,11 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { tableNumber, items, total } = body;
+    const { tableNumber, customerName, items, total } = body;
 
-    if (!tableNumber || !items || !Array.isArray(items) || items.length === 0) {
+    if (!tableNumber || !customerName || !items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
-        { error: 'Missing required order fields' },
+        { error: 'Missing required order fields (tableNumber, customerName, items)' },
         { status: 400 }
       );
     }
@@ -95,8 +99,8 @@ export async function POST(request: Request) {
 
       // 1. Insert main order row
       await connection.execute(
-        'INSERT INTO orders (id, table_number, total_amount, status, created_at) VALUES (?, ?, ?, ?, ?)',
-        [orderId, tableNumber, total, 'Pending', createdAt]
+        'INSERT INTO orders (id, customer_name, table_number, total_amount, status, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+        [orderId, customerName, tableNumber, total, 'Pending', createdAt]
       );
 
       // 2. Insert corresponding items
@@ -133,6 +137,7 @@ export async function POST(request: Request) {
     // Return the created order model matching the expected structure
     const createdOrder: Order = {
       id: orderId,
+      customerName,
       tableNumber,
       items,
       total,

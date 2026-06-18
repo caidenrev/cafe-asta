@@ -34,7 +34,7 @@ export default function QRGeneratorPage() {
 
   const getTargetUrl = () => {
     const host = hostType === 'local' ? origin : customHost;
-    return `${host}/?table=${tableNumber.padStart(2, '0')}`;
+    return `${host}/menu`;
   };
 
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(getTargetUrl())}`;

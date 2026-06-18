@@ -18,6 +18,7 @@ interface OrderItem {
 
 interface Order {
   id: string;
+  customerName: string;
   tableNumber: string;
   total: number;
   status: 'Pending' | 'Processing' | 'Completed';
@@ -28,7 +29,7 @@ interface Order {
 function SuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('id');
-  const tableNumberParam = searchParams.get('table') || '04';
+  const tableNumberParam = searchParams.get('table') || '';
 
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(!!orderId);
@@ -88,7 +89,7 @@ function SuccessContent() {
           Silakan gunakan fitur "Lacak Pesanan" di menu utama atau periksa kembali link Anda.
         </p>
         <Link
-          href="/"
+          href="/menu"
           className="mt-6 bg-cafe-900 text-white text-xs font-black px-6 py-3.5 rounded-full scale-active hover:bg-cafe-800 transition-colors"
         >
           Kembali ke Menu
@@ -128,14 +129,18 @@ function SuccessContent() {
         {/* Garis dekoratif samping */}
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-700"></div>
 
-        <div className="flex justify-between items-center text-left">
+        <div className="grid grid-cols-3 gap-2 text-left">
           <div>
-            <p className="text-xs text-cafe-500 font-black uppercase tracking-wider">Referensi Pesanan</p>
-            <p className="text-sm font-black text-cafe-800 mt-1">{orderId}</p>
+            <p className="text-[10px] text-cafe-500 font-black uppercase tracking-wider">Pelanggan</p>
+            <p className="text-xs font-black text-cafe-850 mt-1 truncate capitalize">{order?.customerName || '-'}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-[10px] text-cafe-500 font-black uppercase tracking-wider">Referensi</p>
+            <p className="text-xs font-black text-cafe-800 mt-1">{orderId}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-cafe-500 font-black uppercase tracking-wider">Nomor Meja</p>
-            <p className="text-sm font-black text-amber-850 mt-1">Meja {order?.tableNumber || tableNumberParam}</p>
+            <p className="text-[10px] text-cafe-500 font-black uppercase tracking-wider">Nomor Meja</p>
+            <p className="text-xs font-black text-amber-850 mt-1">Meja {order?.tableNumber || tableNumberParam || '-'}</p>
           </div>
         </div>
       </div>
@@ -256,7 +261,7 @@ function SuccessContent() {
       {/* Tombol Kembali ke Menu */}
       <div className="fixed bottom-6 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:right-auto md:w-full md:max-w-md z-40">
         <Link
-          href={`/?table=${order?.tableNumber || tableNumberParam}`}
+          href="/menu"
           className="w-full flex items-center justify-center gap-1.5 bg-cafe-900 hover:bg-cafe-800 text-white py-4 rounded-2xl shadow-xl shadow-cafe-950/20 text-sm font-black uppercase tracking-wider transition-all duration-300 scale-active group"
         >
           <span>Pesan Menu Lainnya</span>
