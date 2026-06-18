@@ -1,14 +1,26 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { QrCode, Printer, Globe, Laptop, ArrowLeft, Coffee } from 'lucide-react';
+import { QrCode, Printer, Globe, Laptop, ArrowLeft, Coffee, LogOut } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function QRGeneratorPage() {
   const [tableNumber, setTableNumber] = useState('04');
   const [hostType, setHostType] = useState<'local' | 'custom'>('local');
   const [customHost, setCustomHost] = useState('');
   const [origin, setOrigin] = useState('http://localhost:3000');
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+      router.push('/admin/login');
+      router.refresh();
+    } catch (e) {
+      console.error('Logout failed', e);
+    }
+  };
 
   useEffect(() => {
     fetch('/api/ip')
@@ -62,6 +74,14 @@ export default function QRGeneratorPage() {
             <p className="text-xs text-amber-800 font-black uppercase tracking-wider">Generator QR Code Meja</p>
           </div>
         </div>
+
+        <button
+          onClick={handleLogout}
+          className="p-2.5 rounded-full bg-white hover:bg-red-50 border border-stone-200 hover:border-red-200 text-stone-500 hover:text-red-600 transition-all scale-active flex items-center justify-center"
+          title="Keluar dari sistem"
+        >
+          <LogOut size={16} className="stroke-[2.2]" />
+        </button>
       </header>
 
       <main className="max-w-4xl mx-auto p-6 space-y-8 print:p-0">

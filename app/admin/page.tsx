@@ -13,9 +13,11 @@ import {
   UtensilsCrossed,
   Inbox,
   QrCode,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface OrderItem {
   menuItem: {
@@ -45,6 +47,17 @@ export default function AdminDashboard() {
   const [filter, setFilter] = useState<'All' | 'Pending' | 'Processing' | 'Completed'>('All');
   const [showMenuQrModal, setShowMenuQrModal] = useState(false);
   const [menuUrl, setMenuUrl] = useState('');
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+      router.push('/admin/login');
+      router.refresh();
+    } catch (e) {
+      console.error('Logout failed', e);
+    }
+  };
 
   // Ambil IP host server lokal agar bisa di-scan via HP pada Wi-Fi lokal
   useEffect(() => {
@@ -184,6 +197,14 @@ export default function AdminDashboard() {
             title="Segarkan data pesanan"
           >
             <RefreshCw size={16} className={`stroke-[2.2] ${isRefreshing && 'animate-spin'}`} />
+          </button>
+          <div className="w-px h-6 bg-cafe-200 mx-1"></div>
+          <button
+            onClick={handleLogout}
+            className="p-2.5 rounded-full bg-white hover:bg-red-50 border border-cafe-200 hover:border-red-200 text-cafe-500 hover:text-red-600 transition-all scale-active flex items-center justify-center"
+            title="Keluar dari sistem"
+          >
+            <LogOut size={16} className="stroke-[2.2]" />
           </button>
         </div>
       </header>
