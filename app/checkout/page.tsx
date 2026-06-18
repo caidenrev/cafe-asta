@@ -353,7 +353,7 @@ export default function CheckoutPage() {
                 <a
                   href={paymentQrUrl}
                   download="QRIS_Payment.png"
-                  className="flex-1 py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider text-white bg-amber-750 hover:bg-amber-800 active:bg-amber-900 shadow-md transition-all duration-300 scale-active flex items-center justify-center gap-2"
+                  className="flex-1 py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider text-white bg-amber-700 hover:bg-amber-800 active:bg-amber-900 shadow-md transition-all duration-300 scale-active flex items-center justify-center gap-2"
                 >
                   <Download size={16} className="stroke-[2.5]" />
                   Download QR Code
