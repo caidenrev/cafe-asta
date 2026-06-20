@@ -86,8 +86,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate random 4 digit uppercase order ID
-    const orderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
+    // Generate unique order ID to prevent Midtrans collisions
+    const timestamp = Date.now().toString().slice(-6);
+    const orderId = `ORD-${timestamp}-${Math.floor(100 + Math.random() * 900)}`;
     const createdAt = new Date();
 
     const pool = await getPool();
@@ -168,12 +169,19 @@ async function createMidtransTransaction(order: Order): Promise<string | null> {
       clientKey: process.env.MIDTRANS_CLIENT_KEY || ''
     });
 
-    const itemDetails = order.items.map((item) => ({
-      id: item.menuItem.id,
-      price: item.selectedVariant ? item.selectedVariant.price : item.menuItem.price,
-      quantity: item.quantity,
-      name: item.selectedVariant ? `${item.menuItem.name} (${item.selectedVariant.name})` : item.menuItem.name
-    }));
+    const itemDetails = order.items.map((item) => {
+      let itemName = item.selectedVariant ? `${item.menuItem.name} (${item.selectedVariant.name})` : item.menuItem.name;
+      // Midtrans name max length is 50 chars
+      if (itemName.length > 50) {
+        itemName = itemName.substring(0, 47) + '...';
+      }
+      return {
+        id: item.menuItem.id.substring(0, 50),
+        price: item.selectedVariant ? item.selectedVariant.price : item.menuItem.price,
+        quantity: item.quantity,
+        name: itemName
+      };
+    });
 
     const parameter = {
       transaction_details: {
