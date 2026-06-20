@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Script from 'next/script';
 import { useCart } from '../../context/CartContext';
 import MobileFrame from '../../components/MobileFrame';
 import { QrCode, Lock, CreditCard, Sparkles, CheckCircle, Clock, Download, RefreshCw } from 'lucide-react';
@@ -74,12 +75,36 @@ export default function CheckoutPage() {
       setTableNumber(inputTable);
       setCustomerName(inputName);
 
-      // Buat tautan pembayaran QRIS dinamis untuk scan HP
+      if (orderData.snapToken) {
+        // Trigger Midtrans Snap
+        (window as any).snap.pay(orderData.snapToken, {
+          onSuccess: function(result: any) {
+            clearCart();
+            router.push(`/success?id=${orderData.id}&table=${inputTable}`);
+          },
+          onPending: function(result: any) {
+            alert("Pembayaran tertunda. Selesaikan pembayaran Anda.");
+            setIsVerifying(true);
+          },
+          onError: function(result: any) {
+            alert("Terjadi kesalahan saat pembayaran.");
+            setIsVerifying(true);
+          },
+          onClose: function() {
+            // Jika popup ditutup, kita show QR static / fallback
+            setIsVerifying(true);
+          }
+        });
+      } else {
+        // Fallback jika Midtrans belum dikonfigurasi
+        setIsVerifying(true);
+      }
+
+      // Buat tautan pembayaran QRIS dinamis untuk scan HP (fallback)
       const protocol = window.location.protocol;
       const host = window.location.host;
       const payUrl = `${protocol}//${host}/pay?id=${orderData.id}&amount=${grandTotal}&table=${inputTable}`;
       setPaymentUrl(payUrl);
-      setIsVerifying(true);
     } catch (err) {
       console.error(err);
       setError('Gagal membuat transaksi pembayaran. Silakan coba kembali.');
@@ -190,6 +215,11 @@ export default function CheckoutPage() {
 
   return (
     <MobileFrame>
+      <Script 
+        src="https://app.sandbox.midtrans.com/snap/snap.js" 
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+        strategy="lazyOnload" 
+      />
       <div className="max-w-2xl mx-auto space-y-6 pb-24">
         {/* Info Keamanan Pembayaran */}
         <div className="text-center mt-2">

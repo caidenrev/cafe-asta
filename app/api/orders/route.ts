@@ -145,12 +145,51 @@ export async function POST(request: Request) {
       createdAt: createdAt.toISOString(),
     };
 
-    return NextResponse.json(createdOrder, { status: 201 });
+    // Integrate with Midtrans
+    const snapToken = await createMidtransTransaction(createdOrder);
+
+    return NextResponse.json({ ...createdOrder, snapToken }, { status: 201 });
   } catch (error) {
     console.error('Failed to save order to database:', error);
     return NextResponse.json(
       { error: 'Failed to process order checkout request' },
       { status: 500 }
     );
+  }
+}
+
+// Helper function to create Midtrans transaction
+async function createMidtransTransaction(order: Order): Promise<string | null> {
+  try {
+    const midtransClient = require('midtrans-client');
+    const snap = new midtransClient.Snap({
+      isProduction: false,
+      serverKey: process.env.MIDTRANS_SERVER_KEY || '',
+      clientKey: process.env.MIDTRANS_CLIENT_KEY || ''
+    });
+
+    const itemDetails = order.items.map((item) => ({
+      id: item.menuItem.id,
+      price: item.selectedVariant ? item.selectedVariant.price : item.menuItem.price,
+      quantity: item.quantity,
+      name: item.selectedVariant ? `${item.menuItem.name} (${item.selectedVariant.name})` : item.menuItem.name
+    }));
+
+    const parameter = {
+      transaction_details: {
+        order_id: order.id,
+        gross_amount: order.total
+      },
+      customer_details: {
+        first_name: order.customerName,
+      },
+      item_details: itemDetails
+    };
+
+    const transaction = await snap.createTransaction(parameter);
+    return transaction.token;
+  } catch (err) {
+    console.error('Midtrans Transaction Error:', err);
+    return null;
   }
 }
