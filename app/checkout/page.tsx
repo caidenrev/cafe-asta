@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useCart } from '../../context/CartContext';
 import MobileFrame from '../../components/MobileFrame';
-import { QrCode, Lock, CreditCard, Sparkles, CheckCircle, Clock, Download, RefreshCw } from 'lucide-react';
-import { STATIC_QRIS, generateDynamicQRIS } from '../../lib/qris';
+import { Lock, Clock, RefreshCw } from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -26,7 +25,7 @@ export default function CheckoutPage() {
   }, [customerName]);
 
   const [orderId, setOrderId] = useState<string | null>(null);
-  const [paymentUrl, setPaymentUrl] = useState('');
+  const [snapToken, setSnapToken] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isCheckingPayment, setIsCheckingPayment] = useState(false);
   const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
@@ -76,40 +75,42 @@ export default function CheckoutPage() {
       setCustomerName(inputName);
 
       if (orderData.snapToken) {
-        // Trigger Midtrans Snap
-        (window as any).snap.pay(orderData.snapToken, {
-          onSuccess: function(result: any) {
-            clearCart();
-            router.push(`/success?id=${orderData.id}&table=${inputTable}`);
-          },
-          onPending: function(result: any) {
-            alert("Pembayaran tertunda. Selesaikan pembayaran Anda.");
-            setIsVerifying(true);
-          },
-          onError: function(result: any) {
-            alert("Terjadi kesalahan saat pembayaran.");
-            setIsVerifying(true);
-          },
-          onClose: function() {
-            // Jika popup ditutup, kita show QR static / fallback
-            setIsVerifying(true);
-          }
-        });
+        setSnapToken(orderData.snapToken);
+        triggerMidtrans(orderData.snapToken, orderData.id);
       } else {
-        // Fallback jika Midtrans belum dikonfigurasi
+        alert("Midtrans belum terkonfigurasi. Silakan hubungi kasir.");
         setIsVerifying(true);
       }
-
-      // Buat tautan pembayaran QRIS dinamis untuk scan HP (fallback)
-      const protocol = window.location.protocol;
-      const host = window.location.host;
-      const payUrl = `${protocol}//${host}/pay?id=${orderData.id}&amount=${grandTotal}&table=${inputTable}`;
-      setPaymentUrl(payUrl);
     } catch (err) {
       console.error(err);
       setError('Gagal membuat transaksi pembayaran. Silakan coba kembali.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const triggerMidtrans = (token: string, currentOrderId: string) => {
+    if ((window as any).snap) {
+      (window as any).snap.pay(token, {
+        onSuccess: function(result: any) {
+          clearCart();
+          router.push(`/success?id=${currentOrderId}&table=${inputTable}`);
+        },
+        onPending: function(result: any) {
+          alert("Pembayaran tertunda. Selesaikan pembayaran Anda.");
+          setIsVerifying(true);
+        },
+        onError: function(result: any) {
+          alert("Terjadi kesalahan saat pembayaran.");
+          setIsVerifying(true);
+        },
+        onClose: function() {
+          // Jika popup ditutup
+          setIsVerifying(true);
+        }
+      });
+    } else {
+      alert("Sistem pembayaran belum siap.");
     }
   };
 
@@ -202,12 +203,6 @@ export default function CheckoutPage() {
   };
 
 
-
-  // QR code dinamis ke URL pembayaran aktual QRIS
-  const dynamicQrisPayload = orderId ? generateDynamicQRIS(STATIC_QRIS, grandTotal) : '';
-  const paymentQrUrl = dynamicQrisPayload 
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(dynamicQrisPayload)}`
-    : '/qris-dummy.png';
 
   if (cart.length === 0 && !isSubmitting && !orderId) {
     return null; // Membiarkan redirect berjalan
@@ -333,29 +328,13 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Scan QRIS Card */}
+            {/* Midtrans Payment Options */}
             <div className="bg-white rounded-[2.5rem] border border-stone-200 p-6 shadow-sm flex flex-col items-center justify-center relative">
               <div className="text-center mb-5">
-                <h3 className="text-lg font-black text-cafe-850">Scan QRIS untuk Pembayaran</h3>
+                <h3 className="text-lg font-black text-cafe-850">Selesaikan Pembayaran</h3>
                 <p className="text-[10px] text-stone-500 mt-1 max-w-[280px] mx-auto font-medium">
-                  Gunakan mobile banking atau e-wallet yang mendukung QRIS. Jangan lupa cek nominal sebelum konfirmasi pembayaran.
+                  Klik tombol di bawah ini untuk melanjutkan pembayaran via Midtrans (QRIS, GoPay, Transfer Bank, dll).
                 </p>
-              </div>
-
-              {/* Gambar QR */}
-              <div className="w-56 h-56 relative rounded-2xl overflow-hidden bg-white shadow-sm border border-stone-100 flex items-center justify-center p-3 mb-5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={paymentQrUrl}
-                  alt="Kode QRIS Warkop Asta"
-                  className={`w-full h-full object-cover transition-opacity duration-300 ${isExpired ? 'opacity-20 grayscale' : ''}`}
-                />
-                {isExpired && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60 backdrop-blur-[2px]">
-                    <Lock size={32} className="text-red-500 mb-2" />
-                    <p className="text-xs font-black text-red-600 uppercase">Waktu Habis</p>
-                  </div>
-                )}
               </div>
 
               {/* Sisa Waktu */}
@@ -371,28 +350,29 @@ export default function CheckoutPage() {
               {/* Kendala info */}
               <div className="w-full bg-amber-50 border border-amber-200/60 rounded-2xl p-4 mb-6 text-center">
                 <h4 className="text-xs font-black text-amber-900 mb-1.5">
-                  Kendala scan QRIS?
+                  Belum Membayar?
                 </h4>
                 <p className="text-[10px] text-amber-800/80 font-medium leading-relaxed">
-                  Jika pembayaran belum masuk otomatis, silakan klik tombol <strong>Cek Status Pembayaran</strong> di bawah ini atau minta Kasir untuk memverifikasi.
+                  Jika Anda tidak sengaja menutup halaman pembayaran, silakan klik tombol <strong>Lanjutkan Pembayaran</strong>.
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 w-full">
-                <a
-                  href={paymentQrUrl}
-                  download="QRIS_Payment.png"
-                  className="flex-1 py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider text-white bg-amber-700 hover:bg-amber-800 active:bg-amber-900 shadow-md transition-all duration-300 scale-active flex items-center justify-center gap-2"
-                >
-                  <Download size={16} className="stroke-[2.5]" />
-                  Download QR Code
-                </a>
+              <div className="flex flex-col gap-3 w-full">
+                {snapToken && (
+                  <button
+                    onClick={() => triggerMidtrans(snapToken, orderId as string)}
+                    disabled={isExpired}
+                    className="w-full py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider text-white bg-amber-700 hover:bg-amber-800 active:bg-amber-900 shadow-md transition-all duration-300 scale-active flex items-center justify-center gap-2"
+                  >
+                    Lanjutkan Pembayaran Midtrans
+                  </button>
+                )}
                 
                 <button
                   onClick={handleVerifyPayment}
                   disabled={isCheckingPayment || isExpired}
-                  className={`flex-1 py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all duration-300 scale-active flex items-center justify-center gap-2 border ${
+                  className={`w-full py-3.5 px-4 rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all duration-300 scale-active flex items-center justify-center gap-2 border ${
                     isCheckingPayment || isExpired
                       ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
                       : 'bg-white text-stone-800 border-stone-200 hover:border-amber-700 hover:text-amber-800 hover:bg-amber-50 shadow-sm cursor-pointer'
@@ -412,20 +392,6 @@ export default function CheckoutPage() {
                 </button>
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Subtle helper link for testing at the bottom */}
-        {orderId && (
-          <div className="text-center mt-2">
-            <a 
-              href={paymentUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-amber-800/60 hover:text-amber-800 text-[11px] font-semibold transition-colors"
-            >
-              ⚡ Buka Link Simulasi Pembayaran (Testing)
-            </a>
           </div>
         )}
       </div>
